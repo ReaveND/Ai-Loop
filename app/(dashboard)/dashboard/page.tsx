@@ -1,33 +1,41 @@
-import { getCurrentUser } from "@/lib/session"
-import { prisma } from "@/lib/prisma"
+import { getDashboardMetrics } from "@/lib/services/dashboard"
+import DashboardMetrics from "@/components/DashboardMetrics"
+import VolumeChart from "@/components/charts/VolumeChart"
+import SentimentChart from "@/components/charts/SentimentChart"
+import ThemesChart from "@/components/charts/ThemesChart"
 
 export default async function DashboardPage() {
-  const user = await getCurrentUser()
-  
-  const workspace = await prisma.workspace.findUnique({
-    where: { id: user?.workspaceId }
-  })
-  
-  const feedbackCount = await prisma.feedback.count({
-    where: { workspaceId: user?.workspaceId }
-  })
+  const metrics = await getDashboardMetrics()
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-6">Dashboard</h1>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Dashboard</h1>
+        <p className="text-slate-500">Overview of your customer feedback and insights.</p>
+      </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <DashboardMetrics 
+        totalFeedback={metrics.totalFeedback}
+        newThisWeek={metrics.newThisWeek}
+        negativePercentage={metrics.negativePercentage}
+      />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h2 className="text-sm font-medium text-slate-500 mb-1">Workspace</h2>
-          <p className="text-2xl font-bold text-slate-900 dark:text-white">{workspace?.name}</p>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Feedback Volume (Last 30 Days)</h2>
+          <VolumeChart data={metrics.volumeData} />
         </div>
+        
         <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h2 className="text-sm font-medium text-slate-500 mb-1">Role</h2>
-          <p className="text-2xl font-bold text-slate-900 dark:text-white">{user?.role}</p>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Sentiment Breakdown</h2>
+          <SentimentChart data={metrics.sentimentData} />
         </div>
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h2 className="text-sm font-medium text-slate-500 mb-1">Total Feedback</h2>
-          <p className="text-2xl font-bold text-slate-900 dark:text-white">{feedbackCount}</p>
+
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm lg:col-span-2">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Top Themes</h2>
+          <div className="max-w-3xl">
+            <ThemesChart data={metrics.themesData} />
+          </div>
         </div>
       </div>
     </div>
