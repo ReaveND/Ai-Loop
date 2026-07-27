@@ -3,12 +3,10 @@
 import { signupAction, loginAction } from "@/app/actions"
 import Link from "next/link"
 import { useState, useTransition } from "react"
-import { useRouter } from "next/navigation"
 
 export default function SignupPage() {
   const [error, setError] = useState("")
   const [isPending, startTransition] = useTransition()
-  const router = useRouter()
   
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -23,7 +21,7 @@ export default function SignupPage() {
         // Automatically log them in
         try {
           await loginAction(formData)
-        } catch (err) {}
+        } catch {}
       }
     })
   }

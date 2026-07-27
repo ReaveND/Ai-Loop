@@ -14,7 +14,7 @@ export default function LoginPage() {
     try {
       const res = await loginAction(formData)
       if (res?.error) setError(res.error)
-    } catch (err) {
+    } catch {
       // successful login will redirect and throw an error that we shouldn't catch, or just redirect
     }
   }
@@ -44,7 +44,7 @@ export default function LoginPage() {
         </div>
         <div className="bg-slate-50 dark:bg-slate-800/50 p-4 text-center border-t border-slate-200 dark:border-slate-800">
           <p className="text-sm text-slate-600 dark:text-slate-400">
-            Don't have an account? <Link href="/signup" className="text-blue-600 hover:underline">Sign up</Link>
+            Don&apos;t have an account? <Link href="/signup" className="text-blue-600 hover:underline">Sign up</Link>
           </p>
         </div>
       </div>

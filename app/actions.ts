@@ -86,7 +86,7 @@ export async function createFeedbackAction(formData: FormData) {
     await createFeedback(data)
     revalidatePath("/feedback")
     return { success: true }
-  } catch (error) {
+  } catch {
     return { error: "Failed to create feedback" }
   }
 }

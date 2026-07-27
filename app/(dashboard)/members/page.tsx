@@ -1,13 +1,12 @@
 import { getMembers } from "@/lib/services/members"
-import { getCurrentUser } from "@/lib/session"
 
 export default async function MembersPage() {
-  let members: any[] = []
+  let members: { id: string; name: string | null; email: string; role: string }[] = []
   let error: string | null = null
   
   try {
     members = await getMembers()
-  } catch (err) {
+  } catch {
     error = "You do not have permission to view members."
   }
 

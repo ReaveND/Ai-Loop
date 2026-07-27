@@ -1,65 +1,105 @@
-import { getFeedback } from "@/lib/services/feedback"
+import { getPaginatedFeedback, FeedbackFilters } from "@/lib/services/feedback"
 import { getCurrentUser } from "@/lib/session"
 import FeedbackForm from "./FeedbackForm"
+import CsvUploader from "@/components/CsvUploader"
+import SimulatedChannels from "@/components/SimulatedChannels"
+import FeedbackFiltersComponent from "@/components/FeedbackFilters"
+import FeedbackTable from "@/components/FeedbackTable"
+import Link from "next/link"
 
-export default async function FeedbackPage() {
+export default async function FeedbackPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
   const user = await getCurrentUser()
-  let feedbacks: any[] = []
+  
+  const page = typeof searchParams.page === 'string' ? parseInt(searchParams.page) : 1
+  const limit = 20
+
+  const filters: FeedbackFilters = {
+    search: typeof searchParams.search === 'string' ? searchParams.search : undefined,
+    channel: typeof searchParams.channel === 'string' ? searchParams.channel : undefined,
+    sentiment: typeof searchParams.sentiment === 'string' ? searchParams.sentiment : undefined,
+    theme: typeof searchParams.theme === 'string' ? searchParams.theme : undefined,
+    status: typeof searchParams.status === 'string' ? searchParams.status : undefined,
+    dateRange: typeof searchParams.dateRange === 'string' ? searchParams.dateRange : undefined,
+  }
+
+  let data: { id: string; content: string; channel: string; status: string; createdAt: Date }[] = []
+  let totalPages = 0
   let error = null
   
   try {
-    feedbacks = await getFeedback()
-  } catch (err) {
+    const result = await getPaginatedFeedback(page, limit, filters)
+    data = result.data
+    totalPages = result.totalPages
+  } catch {
     error = "You do not have permission to view feedback."
   }
   
   const canCreate = user?.role === "ADMIN" || user?.role === "ANALYST"
 
+  const buildPaginationUrl = (newPage: number) => {
+    const params = new URLSearchParams()
+    Object.entries(filters).forEach(([k, v]) => {
+      if (v) params.set(k, v)
+    })
+    params.set('page', newPage.toString())
+    return `/feedback?${params.toString()}`
+  }
+
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Feedback</h1>
-        <p className="text-slate-500">Manage and view customer feedback for your workspace.</p>
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Feedback Inbox</h1>
+        <p className="text-slate-500">Manage and analyze customer feedback for your workspace.</p>
       </div>
 
       {canCreate && (
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Add New Feedback</h2>
-          <FeedbackForm />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Add Manual Feedback</h2>
+            <FeedbackForm />
+          </div>
+          <div className="space-y-6">
+            <CsvUploader />
+            <SimulatedChannels />
+          </div>
         </div>
       )}
       
       {error ? (
         <div className="p-4 bg-red-100 text-red-700 rounded-lg">{error}</div>
       ) : (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
-          <table className="w-full text-left">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
-              <tr>
-                <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Content</th>
-                <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Channel</th>
-                <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-              {feedbacks.map(item => (
-                <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                  <td className="px-6 py-4 text-sm font-medium text-slate-900 dark:text-white max-w-xs truncate">{item.content}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{item.channel}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">{new Date(item.createdAt).toLocaleDateString()}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-slate-100 text-slate-800">{item.status}</span>
-                  </td>
-                </tr>
-              ))}
-              {feedbacks.length === 0 && (
-                 <tr>
-                    <td colSpan={4} className="px-6 py-4 text-center text-slate-500">No feedback found</td>
-                 </tr>
+        <div>
+          <FeedbackFiltersComponent />
+          
+          <FeedbackTable data={data} />
+
+          {totalPages > 1 && (
+            <div className="mt-6 flex justify-center space-x-2">
+              {page > 1 && (
+                <Link
+                  href={buildPaginationUrl(page - 1)}
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+                >
+                  Previous
+                </Link>
               )}
-            </tbody>
-          </table>
+              <span className="px-4 py-2 text-slate-500">
+                Page {page} of {totalPages}
+              </span>
+              {page < totalPages && (
+                <Link
+                  href={buildPaginationUrl(page + 1)}
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+                >
+                  Next
+                </Link>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
