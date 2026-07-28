@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs"
 import { prisma } from "./prisma"
 import { authConfig } from "../auth.config"
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+const nextAuthResult = NextAuth({
   ...authConfig,
   providers: [
     CredentialsProvider({
@@ -43,3 +43,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt"
   }
 })
+
+export const handlers = nextAuthResult.handlers
+export const signIn = nextAuthResult.signIn
+export const signOut = nextAuthResult.signOut
+export const auth = nextAuthResult.auth

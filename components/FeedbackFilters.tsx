@@ -11,6 +11,7 @@ export default function FeedbackFilters() {
   const [search, setSearch] = useState(searchParams.get("search") || "")
   const [channel, setChannel] = useState(searchParams.get("channel") || "all")
   const [sentiment, setSentiment] = useState(searchParams.get("sentiment") || "all")
+  const [theme, setTheme] = useState(searchParams.get("theme") || "all")
   const [status, setStatus] = useState(searchParams.get("status") || "all")
   const [dateRange, setDateRange] = useState(searchParams.get("dateRange") || "all")
 
@@ -97,6 +98,22 @@ export default function FeedbackFilters() {
           <option value="POSITIVE">Positive</option>
           <option value="NEUTRAL">Neutral</option>
           <option value="NEGATIVE">Negative</option>
+        </select>
+
+        <select
+          value={theme}
+          onChange={(e) => {
+            setTheme(e.target.value)
+            updateFilters({ theme: e.target.value })
+          }}
+          className="px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="all">All Themes</option>
+          <option value="Pricing">Pricing</option>
+          <option value="Bug/Crash">Bug/Crash</option>
+          <option value="Feature Request">Feature Request</option>
+          <option value="UX/UI">UX/UI</option>
+          <option value="Customer Support">Customer Support</option>
         </select>
 
         <select

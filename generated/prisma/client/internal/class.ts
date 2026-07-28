@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.8.0",
-  "engineVersion": "3c6e192761c0362d496ed980de936e2f3cebcd3a",
+  "clientVersion": "7.9.1",
+  "engineVersion": "e922089b7d7502aff4249d5da3420f6fa55fc6ad",
   "activeProvider": "postgresql",
   "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Workspace {\n  id        String   @id @default(cuid())\n  name      String\n  createdAt DateTime @default(now())\n\n  users     User[]\n  feedbacks Feedback[]\n  themes    Theme[]\n  reports   Report[]\n}\n\nenum Role {\n  ADMIN\n  ANALYST\n  VIEWER\n}\n\nmodel User {\n  id           String    @id @default(cuid())\n  name         String?\n  email        String    @unique\n  passwordHash String\n  role         Role      @default(VIEWER)\n  workspaceId  String\n  workspace    Workspace @relation(fields: [workspaceId], references: [id])\n}\n\nmodel Feedback {\n  id             String          @id @default(cuid())\n  content        String\n  channel        String\n  sourceRef      String?\n  customerLabel  String?\n  sentiment      String?\n  sentimentScore Float?\n  status         String          @default(\"NEW\")\n  createdAt      DateTime        @default(now())\n  workspaceId    String\n  workspace      Workspace       @relation(fields: [workspaceId], references: [id])\n  themes         FeedbackTheme[]\n  embedding      Embedding?\n}\n\nmodel Theme {\n  id          String          @id @default(cuid())\n  name        String\n  description String?\n  color       String?\n  workspaceId String\n  workspace   Workspace       @relation(fields: [workspaceId], references: [id])\n  feedbacks   FeedbackTheme[]\n}\n\nmodel FeedbackTheme {\n  feedbackId String\n  themeId    String\n  confidence Float?\n\n  feedback Feedback @relation(fields: [feedbackId], references: [id])\n  theme    Theme    @relation(fields: [themeId], references: [id])\n\n  @@id([feedbackId, themeId])\n}\n\nmodel Embedding {\n  id         String  @id @default(cuid())\n  feedbackId String  @unique\n  vector     Float[]\n\n  feedback Feedback @relation(fields: [feedbackId], references: [id])\n}\n\nmodel Report {\n  id          String    @id @default(cuid())\n  title       String\n  periodStart DateTime\n  periodEnd   DateTime\n  contentJson Json\n  generatedBy String\n  workspaceId String\n  workspace   Workspace @relation(fields: [workspaceId], references: [id])\n}\n",
   "runtimeDataModel": {
@@ -82,7 +82,7 @@ export interface PrismaClientConstructor {
     LogOpts extends LogOptions<Options> = LogOptions<Options>,
     OmitOpts extends Prisma.PrismaClientOptions['omit'] = Options extends { omit: infer U } ? U : Prisma.PrismaClientOptions['omit'],
     ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs
-  >(options: Prisma.Subset<Options, Prisma.PrismaClientOptions> ): PrismaClient<LogOpts, OmitOpts, ExtArgs>
+  >(options: Prisma.PrismaClientConstructorArgs<Options>): PrismaClient<LogOpts, OmitOpts, ExtArgs>
 }
 
 /**
@@ -103,7 +103,7 @@ export interface PrismaClientConstructor {
 
 export interface PrismaClient<
   in LogOpts extends Prisma.LogLevel = never,
-  in out OmitOpts extends Prisma.PrismaClientOptions['omit'] = undefined,
+  in out OmitOpts extends Prisma.PrismaClientOptions['omit'] = Prisma.PrismaClientOptions['omit'],
   in out ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
