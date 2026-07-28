@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     })
   } catch (error: unknown) {
     if (error instanceof Error && (error.message === "Unauthorized" || error.message === "Forbidden")) {
-      return NextResponse.json({ error: error.message }, { status: 401 })
+      return NextResponse.json({ error: error.message }, { status: error.message === "Forbidden" ? 403 : 401 })
     }
     console.error("CSV upload error:", error)
     return NextResponse.json({ error: "Failed to process CSV file" }, { status: 500 })
