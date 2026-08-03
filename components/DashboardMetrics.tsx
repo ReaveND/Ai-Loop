@@ -3,10 +3,12 @@ import { MessageSquare, TrendingUp, AlertTriangle } from "lucide-react"
 export default function DashboardMetrics({
   totalFeedback,
   newThisWeek,
+  volumeSpikePercentage,
   negativePercentage
 }: {
   totalFeedback: number
   newThisWeek: number
+  volumeSpikePercentage: number
   negativePercentage: number
 }) {
   return (
@@ -27,7 +29,14 @@ export default function DashboardMetrics({
         </div>
         <div>
           <p className="text-sm font-medium text-slate-500">New This Week</p>
-          <p className="text-2xl font-bold text-slate-900 dark:text-white">{newThisWeek.toLocaleString()}</p>
+          <div className="flex items-baseline gap-2">
+            <p className="text-2xl font-bold text-slate-900 dark:text-white">{newThisWeek.toLocaleString()}</p>
+            {volumeSpikePercentage !== 0 && (
+              <span className={`text-xs font-semibold ${volumeSpikePercentage > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
+                {volumeSpikePercentage > 0 ? '↑' : '↓'} {Math.abs(volumeSpikePercentage)}%
+              </span>
+            )}
+          </div>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 "use client"
 
 import { useTransition } from "react"
-import { updateFeedbackStatusAction } from "@/app/actions/feedback"
+import { updateFeedbackStatusAction, reclassifyFeedbackAction } from "@/app/actions/feedback"
 import { Loader2 } from "lucide-react"
 
 type Feedback = {
@@ -18,6 +18,15 @@ export default function FeedbackTable({ data }: { data: Feedback[] }) {
   const handleStatusChange = (id: string, newStatus: string) => {
     startTransition(async () => {
       const res = await updateFeedbackStatusAction(id, newStatus)
+      if (res.error) {
+        alert(res.error)
+      }
+    })
+  }
+
+  const handleReclassify = (id: string) => {
+    startTransition(async () => {
+      const res = await reclassifyFeedbackAction(id)
       if (res.error) {
         alert(res.error)
       }
@@ -42,6 +51,7 @@ export default function FeedbackTable({ data }: { data: Feedback[] }) {
               <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Channel</th>
               <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Date</th>
               <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
@@ -69,6 +79,15 @@ export default function FeedbackTable({ data }: { data: Feedback[] }) {
                     <option value="REVIEWED">REVIEWED</option>
                     <option value="ACTIONED">ACTIONED</option>
                   </select>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <button 
+                    onClick={() => handleReclassify(item.id)}
+                    disabled={isPending}
+                    className="text-xs font-medium text-indigo-600 hover:text-indigo-800 disabled:opacity-50"
+                  >
+                    Re-classify
+                  </button>
                 </td>
               </tr>
             ))}

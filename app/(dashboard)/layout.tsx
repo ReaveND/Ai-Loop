@@ -2,7 +2,7 @@ import { getCurrentUser } from "@/lib/session"
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { logoutAction } from "@/app/actions"
-import { Users, MessageSquare, LayoutDashboard, Settings, LogOut } from "lucide-react"
+import { Users, MessageSquare, LayoutDashboard, Settings, LogOut, TrendingUp, Sparkles } from "lucide-react"
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser()
@@ -17,6 +17,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <nav className="flex-1 p-4 space-y-1">
           <Link href="/dashboard" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"><LayoutDashboard size={18} /> <span>Dashboard</span></Link>
           <Link href="/feedback" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"><MessageSquare size={18} /> <span>Feedback</span></Link>
+          <Link href="/themes" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"><TrendingUp size={18} /> <span>Themes & Trends</span></Link>
+          <Link href="/ask" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"><Sparkles size={18} /> <span>Ask LOOP</span></Link>
           <Link href="/members" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"><Users size={18} /> <span>Members</span></Link>
           <Link href="/settings" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"><Settings size={18} /> <span>Settings</span></Link>
         </nav>

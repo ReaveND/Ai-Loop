@@ -17,6 +17,7 @@ export default async function DashboardPage() {
       <DashboardMetrics 
         totalFeedback={metrics.totalFeedback}
         newThisWeek={metrics.newThisWeek}
+        volumeSpikePercentage={metrics.volumeSpikePercentage}
         negativePercentage={metrics.negativePercentage}
       />
 

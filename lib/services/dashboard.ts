@@ -21,6 +21,24 @@ export async function getDashboardMetrics() {
     }
   })
 
+  // 2b. New Last Week (for spike detection)
+  const fourteenDaysAgo = new Date(now)
+  fourteenDaysAgo.setDate(now.getDate() - 14)
+  const newLastWeek = await prisma.feedback.count({
+    where: { 
+      workspaceId: user.workspaceId,
+      createdAt: { gte: fourteenDaysAgo, lt: sevenDaysAgo }
+    }
+  })
+
+  // Calculate spike percentage
+  let volumeSpikePercentage = 0;
+  if (newLastWeek > 0) {
+    volumeSpikePercentage = Math.round(((newThisWeek - newLastWeek) / newLastWeek) * 100)
+  } else if (newThisWeek > 0) {
+    volumeSpikePercentage = 100 // Spike from 0
+  }
+
   // 3. Negative Percentage
   const totalWithSentiment = await prisma.feedback.count({
     where: { 
@@ -32,7 +50,7 @@ export async function getDashboardMetrics() {
   const totalNegative = await prisma.feedback.count({
     where: {
       workspaceId: user.workspaceId,
-      sentiment: "NEGATIVE"
+      sentiment: "Negative"
     }
   })
 
@@ -83,7 +101,7 @@ export async function getDashboardMetrics() {
   })
 
   let sentimentData = sentimentCounts.map(s => ({
-    name: s.sentiment || "Unknown",
+    name: (s.sentiment || "Unknown").toUpperCase(),
     value: s._count.sentiment
   }))
 
@@ -131,6 +149,7 @@ export async function getDashboardMetrics() {
   return {
     totalFeedback,
     newThisWeek,
+    volumeSpikePercentage,
     negativePercentage,
     volumeData,
     sentimentData,
