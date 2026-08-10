@@ -61,7 +61,7 @@ export default function AiExecutiveBanner({
             <span className="text-textPrimary font-semibold underline decoration-purple-400/60 decoration-2">
               Mobile Navigation UX
             </span>
-            . Currently monitoring <strong className="text-textPrimary font-mono">{totalFeedback.toLocaleString()}</strong> records.
+            . Currently monitoring <strong className="text-textPrimary font-mono">{totalFeedback.toLocaleString('en-US')}</strong> records.
           </p>
         </div>
 

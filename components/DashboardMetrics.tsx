@@ -32,7 +32,7 @@ export default function DashboardMetrics({
             Total Feedback
           </span>
           <p className="text-3xl font-bold text-textPrimary tabular-nums tracking-tight mt-1">
-            {totalFeedback.toLocaleString()}
+            {totalFeedback.toLocaleString('en-US')}
           </p>
           {hasData && (
             <div className="flex items-center mt-1 text-xs font-medium text-semantic-success">
@@ -52,9 +52,9 @@ export default function DashboardMetrics({
           <TrendingUp className="w-6 h-6" />
         </div>
         <div>
-          <p className="text-sm font-medium text-slate-500">New This Week</p>
+          <p className="text-sm font-medium text-textSecondary">New This Week</p>
           <div className="flex items-baseline gap-2">
-            <p className="text-2xl font-bold text-slate-900 dark:text-white">{newThisWeek.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-textPrimary">{newThisWeek.toLocaleString('en-US')}</p>
             {volumeSpikePercentage !== 0 && (
               <span className={`text-xs font-semibold ${volumeSpikePercentage > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
                 {volumeSpikePercentage > 0 ? '↑' : '↓'} {Math.abs(volumeSpikePercentage)}%
