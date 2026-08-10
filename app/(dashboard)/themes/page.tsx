@@ -22,7 +22,7 @@ export default async function ThemesPage() {
     take: 10
   })
 
-  let themesData = themes.map(t => ({
+  const themesData = themes.map(t => ({
     name: t.name,
     count: t._count.feedbacks,
     id: t.id

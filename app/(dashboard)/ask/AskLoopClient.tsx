@@ -6,7 +6,7 @@ import { useRef, useEffect, useState } from "react"
 
 export default function AskLoopClient() {
   const chatState = useChat()
-  // @ts-ignore: mapping to sendMessage for newer AI SDK versions
+
   const { messages, status, sendMessage } = chatState || { messages: [], status: "idle", sendMessage: undefined }
   const [chatInput, setChatInput] = useState("")
   const isLoading = status === "streaming" || status === "submitted"
@@ -17,7 +17,7 @@ export default function AskLoopClient() {
     e.preventDefault()
     if (!chatInput.trim()) return
     if (sendMessage) {
-      // @ts-ignore
+      // @ts-expect-error: newer AI SDK versions accept extra fields
       sendMessage({ role: 'user', content: chatInput, id: Date.now().toString() })
     }
     setChatInput("")
@@ -78,7 +78,7 @@ export default function AskLoopClient() {
                   : 'bg-slate-100 dark:bg-slate-800 text-textPrimary rounded-tl-sm'
               }`}>
                 <div className="prose dark:prose-invert max-w-none text-sm whitespace-pre-wrap">
-                  {/* @ts-ignore */}
+                  {/* @ts-expect-error: parts is dynamically populated by ai sdk */}
                   {m.content || m.parts?.map((part, i) => part.type === 'text' ? <span key={i}>{part.text}</span> : null)}
                 </div>
               </div>

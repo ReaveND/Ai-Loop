@@ -1035,6 +1035,7 @@ export const ReportScalarFieldEnum = {
   periodStart: 'periodStart',
   periodEnd: 'periodEnd',
   contentJson: 'contentJson',
+  createdAt: 'createdAt',
   generatedBy: 'generatedBy',
   workspaceId: 'workspaceId'
 } as const

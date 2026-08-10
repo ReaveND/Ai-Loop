@@ -29,6 +29,7 @@ export type ReportMinAggregateOutputType = {
   title: string | null
   periodStart: Date | null
   periodEnd: Date | null
+  createdAt: Date | null
   generatedBy: string | null
   workspaceId: string | null
 }
@@ -38,6 +39,7 @@ export type ReportMaxAggregateOutputType = {
   title: string | null
   periodStart: Date | null
   periodEnd: Date | null
+  createdAt: Date | null
   generatedBy: string | null
   workspaceId: string | null
 }
@@ -48,6 +50,7 @@ export type ReportCountAggregateOutputType = {
   periodStart: number
   periodEnd: number
   contentJson: number
+  createdAt: number
   generatedBy: number
   workspaceId: number
   _all: number
@@ -59,6 +62,7 @@ export type ReportMinAggregateInputType = {
   title?: true
   periodStart?: true
   periodEnd?: true
+  createdAt?: true
   generatedBy?: true
   workspaceId?: true
 }
@@ -68,6 +72,7 @@ export type ReportMaxAggregateInputType = {
   title?: true
   periodStart?: true
   periodEnd?: true
+  createdAt?: true
   generatedBy?: true
   workspaceId?: true
 }
@@ -78,6 +83,7 @@ export type ReportCountAggregateInputType = {
   periodStart?: true
   periodEnd?: true
   contentJson?: true
+  createdAt?: true
   generatedBy?: true
   workspaceId?: true
   _all?: true
@@ -161,6 +167,7 @@ export type ReportGroupByOutputType = {
   periodStart: Date
   periodEnd: Date
   contentJson: runtime.JsonValue
+  createdAt: Date
   generatedBy: string
   workspaceId: string
   _count: ReportCountAggregateOutputType | null
@@ -192,6 +199,7 @@ export type ReportWhereInput = {
   periodStart?: Prisma.DateTimeFilter<"Report"> | Date | string
   periodEnd?: Prisma.DateTimeFilter<"Report"> | Date | string
   contentJson?: Prisma.JsonFilter<"Report">
+  createdAt?: Prisma.DateTimeFilter<"Report"> | Date | string
   generatedBy?: Prisma.StringFilter<"Report"> | string
   workspaceId?: Prisma.StringFilter<"Report"> | string
   workspace?: Prisma.XOR<Prisma.WorkspaceScalarRelationFilter, Prisma.WorkspaceWhereInput>
@@ -203,6 +211,7 @@ export type ReportOrderByWithRelationInput = {
   periodStart?: Prisma.SortOrder
   periodEnd?: Prisma.SortOrder
   contentJson?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   generatedBy?: Prisma.SortOrder
   workspaceId?: Prisma.SortOrder
   workspace?: Prisma.WorkspaceOrderByWithRelationInput
@@ -217,6 +226,7 @@ export type ReportWhereUniqueInput = Prisma.AtLeast<{
   periodStart?: Prisma.DateTimeFilter<"Report"> | Date | string
   periodEnd?: Prisma.DateTimeFilter<"Report"> | Date | string
   contentJson?: Prisma.JsonFilter<"Report">
+  createdAt?: Prisma.DateTimeFilter<"Report"> | Date | string
   generatedBy?: Prisma.StringFilter<"Report"> | string
   workspaceId?: Prisma.StringFilter<"Report"> | string
   workspace?: Prisma.XOR<Prisma.WorkspaceScalarRelationFilter, Prisma.WorkspaceWhereInput>
@@ -228,6 +238,7 @@ export type ReportOrderByWithAggregationInput = {
   periodStart?: Prisma.SortOrder
   periodEnd?: Prisma.SortOrder
   contentJson?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   generatedBy?: Prisma.SortOrder
   workspaceId?: Prisma.SortOrder
   _count?: Prisma.ReportCountOrderByAggregateInput
@@ -244,6 +255,7 @@ export type ReportScalarWhereWithAggregatesInput = {
   periodStart?: Prisma.DateTimeWithAggregatesFilter<"Report"> | Date | string
   periodEnd?: Prisma.DateTimeWithAggregatesFilter<"Report"> | Date | string
   contentJson?: Prisma.JsonWithAggregatesFilter<"Report">
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Report"> | Date | string
   generatedBy?: Prisma.StringWithAggregatesFilter<"Report"> | string
   workspaceId?: Prisma.StringWithAggregatesFilter<"Report"> | string
 }
@@ -254,6 +266,7 @@ export type ReportCreateInput = {
   periodStart: Date | string
   periodEnd: Date | string
   contentJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
   generatedBy: string
   workspace: Prisma.WorkspaceCreateNestedOneWithoutReportsInput
 }
@@ -264,6 +277,7 @@ export type ReportUncheckedCreateInput = {
   periodStart: Date | string
   periodEnd: Date | string
   contentJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
   generatedBy: string
   workspaceId: string
 }
@@ -274,6 +288,7 @@ export type ReportUpdateInput = {
   periodStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contentJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   generatedBy?: Prisma.StringFieldUpdateOperationsInput | string
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutReportsNestedInput
 }
@@ -284,6 +299,7 @@ export type ReportUncheckedUpdateInput = {
   periodStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contentJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   generatedBy?: Prisma.StringFieldUpdateOperationsInput | string
   workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -294,6 +310,7 @@ export type ReportCreateManyInput = {
   periodStart: Date | string
   periodEnd: Date | string
   contentJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
   generatedBy: string
   workspaceId: string
 }
@@ -304,6 +321,7 @@ export type ReportUpdateManyMutationInput = {
   periodStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contentJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   generatedBy?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -313,6 +331,7 @@ export type ReportUncheckedUpdateManyInput = {
   periodStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contentJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   generatedBy?: Prisma.StringFieldUpdateOperationsInput | string
   workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -333,6 +352,7 @@ export type ReportCountOrderByAggregateInput = {
   periodStart?: Prisma.SortOrder
   periodEnd?: Prisma.SortOrder
   contentJson?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   generatedBy?: Prisma.SortOrder
   workspaceId?: Prisma.SortOrder
 }
@@ -342,6 +362,7 @@ export type ReportMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   periodStart?: Prisma.SortOrder
   periodEnd?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   generatedBy?: Prisma.SortOrder
   workspaceId?: Prisma.SortOrder
 }
@@ -351,6 +372,7 @@ export type ReportMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   periodStart?: Prisma.SortOrder
   periodEnd?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
   generatedBy?: Prisma.SortOrder
   workspaceId?: Prisma.SortOrder
 }
@@ -403,6 +425,7 @@ export type ReportCreateWithoutWorkspaceInput = {
   periodStart: Date | string
   periodEnd: Date | string
   contentJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
   generatedBy: string
 }
 
@@ -412,6 +435,7 @@ export type ReportUncheckedCreateWithoutWorkspaceInput = {
   periodStart: Date | string
   periodEnd: Date | string
   contentJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
   generatedBy: string
 }
 
@@ -450,6 +474,7 @@ export type ReportScalarWhereInput = {
   periodStart?: Prisma.DateTimeFilter<"Report"> | Date | string
   periodEnd?: Prisma.DateTimeFilter<"Report"> | Date | string
   contentJson?: Prisma.JsonFilter<"Report">
+  createdAt?: Prisma.DateTimeFilter<"Report"> | Date | string
   generatedBy?: Prisma.StringFilter<"Report"> | string
   workspaceId?: Prisma.StringFilter<"Report"> | string
 }
@@ -460,6 +485,7 @@ export type ReportCreateManyWorkspaceInput = {
   periodStart: Date | string
   periodEnd: Date | string
   contentJson: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
   generatedBy: string
 }
 
@@ -469,6 +495,7 @@ export type ReportUpdateWithoutWorkspaceInput = {
   periodStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contentJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   generatedBy?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -478,6 +505,7 @@ export type ReportUncheckedUpdateWithoutWorkspaceInput = {
   periodStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contentJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   generatedBy?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -487,6 +515,7 @@ export type ReportUncheckedUpdateManyWithoutWorkspaceInput = {
   periodStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contentJson?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   generatedBy?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -498,6 +527,7 @@ export type ReportSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   periodStart?: boolean
   periodEnd?: boolean
   contentJson?: boolean
+  createdAt?: boolean
   generatedBy?: boolean
   workspaceId?: boolean
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
@@ -509,6 +539,7 @@ export type ReportSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   periodStart?: boolean
   periodEnd?: boolean
   contentJson?: boolean
+  createdAt?: boolean
   generatedBy?: boolean
   workspaceId?: boolean
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
@@ -520,6 +551,7 @@ export type ReportSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   periodStart?: boolean
   periodEnd?: boolean
   contentJson?: boolean
+  createdAt?: boolean
   generatedBy?: boolean
   workspaceId?: boolean
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
@@ -531,11 +563,12 @@ export type ReportSelectScalar = {
   periodStart?: boolean
   periodEnd?: boolean
   contentJson?: boolean
+  createdAt?: boolean
   generatedBy?: boolean
   workspaceId?: boolean
 }
 
-export type ReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "periodStart" | "periodEnd" | "contentJson" | "generatedBy" | "workspaceId", ExtArgs["result"]["report"]>
+export type ReportOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "periodStart" | "periodEnd" | "contentJson" | "createdAt" | "generatedBy" | "workspaceId", ExtArgs["result"]["report"]>
 export type ReportInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
 }
@@ -557,6 +590,7 @@ export type $ReportPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     periodStart: Date
     periodEnd: Date
     contentJson: runtime.JsonValue
+    createdAt: Date
     generatedBy: string
     workspaceId: string
   }, ExtArgs["result"]["report"]>
@@ -988,6 +1022,7 @@ export interface ReportFieldRefs {
   readonly periodStart: Prisma.FieldRef<"Report", 'DateTime'>
   readonly periodEnd: Prisma.FieldRef<"Report", 'DateTime'>
   readonly contentJson: Prisma.FieldRef<"Report", 'Json'>
+  readonly createdAt: Prisma.FieldRef<"Report", 'DateTime'>
   readonly generatedBy: Prisma.FieldRef<"Report", 'String'>
   readonly workspaceId: Prisma.FieldRef<"Report", 'String'>
 }

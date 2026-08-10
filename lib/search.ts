@@ -5,8 +5,10 @@ import { prisma } from './prisma';
 class PipelineSingleton {
   static task = 'feature-extraction' as const;
   static model = 'Xenova/all-MiniLM-L6-v2';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static instance: any = null;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static async getInstance(progress_callback: any = null) {
     if (this.instance === null) {
       this.instance = pipeline(this.task, this.model, { progress_callback });
@@ -40,5 +42,5 @@ export async function findSimilarFeedback(workspaceId: string, queryVector: numb
     LIMIT ${limit}
   `;
   
-  return result as any[];
+  return result as { id: string, content: string, customerLabel: string | null, channel: string, distance: number }[];
 }

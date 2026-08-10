@@ -2,13 +2,13 @@ import { getCurrentUser } from "@/lib/session"
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { logoutAction } from "@/app/actions"
-import { Users, MessageSquare, LayoutDashboard, Settings, LogOut, TrendingUp, Sparkles } from "lucide-react"
+import { Users, MessageSquare, LayoutDashboard, Settings, LogOut, TrendingUp, Sparkles, FileText } from "lucide-react"
 
 import { ToastProvider } from "@/components/ToastProvider"
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser()
-  if (!user) redirect("/login")
+  if (!user) redirect("/login?clear=1")
 
   return (
     <ToastProvider>
@@ -22,6 +22,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <Link href="/feedback" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-textSecondary hover:bg-surface-2 hover:text-textPrimary transition-colors"><MessageSquare size={18} /> <span>Feedback</span></Link>
             <Link href="/themes" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-textSecondary hover:bg-surface-2 hover:text-textPrimary transition-colors"><TrendingUp size={18} /> <span>Themes & Trends</span></Link>
             <Link href="/ask" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-textSecondary hover:bg-surface-2 hover:text-textPrimary transition-colors"><Sparkles size={18} /> <span>Ask LOOP</span></Link>
+            <Link href="/reports" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-textSecondary hover:bg-surface-2 hover:text-textPrimary transition-colors"><FileText size={18} /> <span>Reports</span></Link>
             <Link href="/members" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-textSecondary hover:bg-surface-2 hover:text-textPrimary transition-colors"><Users size={18} /> <span>Members</span></Link>
             <Link href="/settings" className="flex items-center space-x-3 px-3 py-2 rounded-md text-sm font-medium text-textSecondary hover:bg-surface-2 hover:text-textPrimary transition-colors"><Settings size={18} /> <span>Settings</span></Link>
           </nav>

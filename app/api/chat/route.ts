@@ -11,8 +11,6 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const fs = require('fs');
-    fs.appendFileSync('ask-loop-debug.log', `\\n[Ask LOOP] Request Body: ${JSON.stringify(body, null, 2)}\\n`);
 
     const { messages } = body;
     const lastMessage = messages[messages.length - 1]
@@ -23,7 +21,7 @@ export async function POST(req: NextRequest) {
 
     const queryText = typeof lastMessage.content === 'string' 
       ? lastMessage.content 
-      : lastMessage.parts?.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('\\n') || '';
+      : lastMessage.parts?.filter((p: { type: string, text?: string }) => p.type === 'text').map((p: { type: string, text?: string }) => p.text).join('\\n') || '';
 
     if (!queryText.trim()) {
       return new Response("No text in message", { status: 400 })
@@ -35,8 +33,7 @@ export async function POST(req: NextRequest) {
     // 2. Semantic search using pgvector
     const relevantFeedback = await findSimilarFeedback(user.workspaceId, queryVector, 10)
     
-    // Write debug info to a file we can read
-    fs.appendFileSync('ask-loop-debug.log', `\\n[Ask LOOP] User: ${user.email}, Workspace: ${user.workspaceId}\\n[Ask LOOP] Found ${relevantFeedback.length} feedbacks for query: "${queryText}"\\n`);
+
 
     // 3. Ask Claude (Groq) with grounded context
     const stream = await askLoopGroundedQnA(queryText, relevantFeedback)

@@ -18,6 +18,9 @@ export const authConfig = {
       } else if (isLoggedIn) {
         // If they are on public pages like login/signup, redirect to dashboard
         if (nextUrl.pathname === '/login' || nextUrl.pathname === '/signup') {
+            if (nextUrl.searchParams.get('clear') === '1') {
+              return true;
+            }
             return Response.redirect(new URL('/dashboard', nextUrl));
         }
       }

@@ -6,7 +6,7 @@ import VolumeChart from "@/components/charts/VolumeChart"
 import SentimentChart from "@/components/charts/SentimentChart"
 import ThemesChart from "@/components/charts/ThemesChart"
 import Link from "next/link"
-import { Calendar, Plus, Sparkles } from "lucide-react"
+import { Calendar, Plus } from "lucide-react"
 
 export default async function DashboardPage() {
   const metrics = await getDashboardMetrics()
@@ -70,6 +70,7 @@ export default async function DashboardPage() {
         <DashboardMetrics
           totalFeedback={metrics.totalFeedback}
           newThisWeek={metrics.newThisWeek}
+          volumeSpikePercentage={metrics.volumeSpikePercentage}
           negativePercentage={metrics.negativePercentage}
         />
 

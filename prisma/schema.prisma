@@ -87,6 +87,7 @@ model Report {
   periodStart DateTime
   periodEnd   DateTime
   contentJson Json
+  createdAt   DateTime  @default(now())
   generatedBy String
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id])

@@ -1,14 +1,23 @@
 "use client"
 
-import { loginAction } from "@/app/actions"
+import { loginAction, logoutAction } from "@/app/actions"
 import Link from "next/link"
-import { useState, useTransition } from "react"
+import { useState, useTransition, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { Loader2, Eye, EyeOff, AlertCircle, ArrowLeft } from "lucide-react"
 
 export default function LoginPage() {
   const [error, setError] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [isPending, startTransition] = useTransition()
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    if (searchParams?.get("clear") === "1") {
+      // If we got redirected here to clear a stale session, automatically log out
+      logoutAction().catch(() => {})
+    }
+  }, [searchParams])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()

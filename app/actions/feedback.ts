@@ -49,7 +49,7 @@ export async function reclassifyFeedbackAction(id: string) {
     // Clear old themes
     await prisma.feedbackTheme.deleteMany({ where: { feedbackId: id } });
 
-    const newThemes = [];
+
     if (classification.themes.length > 0) {
       for (const themeName of classification.themes) {
          let theme = await prisma.theme.findFirst({
