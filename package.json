@@ -9,10 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/groq": "^4.0.19",
+    "@ai-sdk/react": "^4.0.51",
     "@prisma/adapter-pg": "^7.9.0",
     "@prisma/client": "^7.9.1",
     "@types/papaparse": "^5.5.2",
     "@types/pg": "^8.20.0",
+    "@xenova/transformers": "^2.17.2",
+    "ai": "^7.0.48",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
     "lucide-react": "^1.26.0",
@@ -36,6 +40,9 @@
     "prisma": "^7.9.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "npx -y tsx prisma/seed.ts"
   },
   "overrides": {
     "braces": "^3.0.3",

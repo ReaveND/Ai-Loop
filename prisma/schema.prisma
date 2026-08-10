@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma/client"
+  provider        = "prisma-client"
+  output          = "../generated/prisma/client"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider   = "postgresql"
+  extensions = [vector, prisma_postgres]
 }
 
 model Workspace {
@@ -74,7 +76,7 @@ model FeedbackTheme {
 model Embedding {
   id         String   @id @default(cuid())
   feedbackId String   @unique
-  vector     Float[]
+  vector     Unsupported("vector(384)")
   
   feedback   Feedback @relation(fields: [feedbackId], references: [id])
 }

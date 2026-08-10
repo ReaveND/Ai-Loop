@@ -154,13 +154,12 @@ export default function FeedbackTable({
                     value={item.status}
                     disabled={isPending}
                     onChange={(e) => handleStatusChange(item.id, e.target.value)}
-                    className={`px-2.5 py-1 text-xs font-semibold rounded-full border outline-none cursor-pointer transition-colors ${
-                      item.status === "NEW"
+                    className={`px-2.5 py-1 text-xs font-semibold rounded-full border outline-none cursor-pointer transition-colors ${item.status === "NEW"
                         ? "bg-accent-50 text-accent-400 border-accent-500/30"
                         : item.status === "REVIEWED"
-                        ? "bg-semantic-warning-bg text-semantic-warning border-semantic-warning/30"
-                        : "bg-semantic-success-bg text-semantic-success border-semantic-success/30"
-                    }`}
+                          ? "bg-semantic-warning-bg text-semantic-warning border-semantic-warning/30"
+                          : "bg-semantic-success-bg text-semantic-success border-semantic-success/30"
+                      }`}
                   >
                     <option value="NEW">NEW</option>
                     <option value="REVIEWED">REVIEWED</option>

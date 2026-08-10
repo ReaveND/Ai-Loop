@@ -554,12 +554,6 @@ export type FeedbackUpdateOneRequiredWithoutThemesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.FeedbackUpdateToOneWithWhereWithoutThemesInput, Prisma.FeedbackUpdateWithoutThemesInput>, Prisma.FeedbackUncheckedUpdateWithoutThemesInput>
 }
 
-export type FeedbackCreateNestedOneWithoutEmbeddingInput = {
-  create?: Prisma.XOR<Prisma.FeedbackCreateWithoutEmbeddingInput, Prisma.FeedbackUncheckedCreateWithoutEmbeddingInput>
-  connectOrCreate?: Prisma.FeedbackCreateOrConnectWithoutEmbeddingInput
-  connect?: Prisma.FeedbackWhereUniqueInput
-}
-
 export type FeedbackUpdateOneRequiredWithoutEmbeddingNestedInput = {
   create?: Prisma.XOR<Prisma.FeedbackCreateWithoutEmbeddingInput, Prisma.FeedbackUncheckedCreateWithoutEmbeddingInput>
   connectOrCreate?: Prisma.FeedbackCreateOrConnectWithoutEmbeddingInput

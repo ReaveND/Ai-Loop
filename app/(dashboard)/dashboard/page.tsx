@@ -56,35 +56,27 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="space-y-8">
-        {/* AI Executive Command Center Banner */}
-        <AiExecutiveBanner
-          totalFeedback={metrics.totalFeedback}
-          newCount={metrics.newThisWeek}
-        />
+      <DashboardMetrics
+        totalFeedback={metrics.totalFeedback}
+        newThisWeek={metrics.newThisWeek}
+        volumeSpikePercentage={metrics.volumeSpikePercentage}
+        negativePercentage={metrics.negativePercentage}
+      />
 
-        {/* KPI Stat Cards (3 Cards matching 1st image screenshot layout) */}
-        <DashboardMetrics
-          totalFeedback={metrics.totalFeedback}
-          newThisWeek={metrics.newThisWeek}
-          negativePercentage={metrics.negativePercentage}
-        />
-
-        {/* Grid Row 1: Feedback Volume (Last 30 Days) & Sentiment Breakdown */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <VolumeChart data={metrics.volumeData} />
-          </div>
-          <div className="lg:col-span-1">
-            <SentimentChart data={metrics.sentimentData} />
-          </div>
+      {/* Grid Row 1: Feedback Volume (Last 30 Days) & Sentiment Breakdown */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <VolumeChart data={metrics.volumeData} />
         </div>
-
-        {/* Grid Row 2: Emerging AI Themes & Live Customer Pulse Stream */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ThemesChart data={metrics.themesData} />
-          <LiveCustomerPulse />
+        <div className="lg:col-span-1">
+          <SentimentChart data={metrics.sentimentData} />
         </div>
+      </div>
+
+      {/* Grid Row 2: Emerging AI Themes & Live Customer Pulse Stream */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <ThemesChart data={metrics.themesData} />
+        <LiveCustomerPulse />
       </div>
     </div>
   )
