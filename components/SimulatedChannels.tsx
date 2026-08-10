@@ -3,18 +3,20 @@
 import { useState, useTransition } from "react"
 import { simulateFeedbackAction } from "@/app/actions/simulate"
 import { MessageSquare, DownloadCloud, Loader2, CheckCircle2 } from "lucide-react"
+import { useToast } from "@/components/ToastProvider"
 
 const CHANNELS = [
   "Support Tickets",
   "App Store Reviews",
   "NPS Survey",
-  "Sales Notes"
+  "Sales Notes",
 ] as const
 
-export default function SimulatedChannels() {
+export default function SimulatedChannels({ onSimulateComplete }: { onSimulateComplete?: () => void }) {
   const [isPending, startTransition] = useTransition()
   const [activeChannel, setActiveChannel] = useState<string | null>(null)
-  const [result, setResult] = useState<{ channel: string, count: number } | null>(null)
+  const [result, setResult] = useState<{ channel: string; count: number } | null>(null)
+  const { toast } = useToast()
 
   const handleSimulate = (channel: typeof CHANNELS[number]) => {
     setActiveChannel(channel)
@@ -23,45 +25,57 @@ export default function SimulatedChannels() {
       const res = await simulateFeedbackAction(channel)
       if (res.success) {
         setResult({ channel, count: res.count as number })
+        toast({
+          title: `${channel} Simulated`,
+          description: `Generated ${res.count} synthetic feedback records.`,
+          variant: "success",
+        })
+        if (onSimulateComplete) onSimulateComplete()
       } else {
-        alert(res.error)
+        toast({
+          title: "Simulation failed",
+          description: res.error || "An error occurred.",
+          variant: "danger",
+        })
       }
       setActiveChannel(null)
     })
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm mt-6">
-      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
-        <DownloadCloud className="w-5 h-5 mr-2 text-blue-500" />
+    <div className="bg-surface-1 p-5 rounded-xl border border-borderSubtle shadow-sm">
+      <h3 className="text-sm font-semibold text-textPrimary mb-2 flex items-center">
+        <DownloadCloud className="w-4 h-4 mr-2 text-accent-400" />
         Simulated Channels
       </h3>
-      <p className="text-sm text-slate-500 mb-4">
-        Generate demo feedback to simulate integrations. Each channel generates 20-30 records.
+      <p className="text-xs text-textSecondary mb-4">
+        Generate demo customer feedback to test AI sentiment and theme detection.
       </p>
-      
-      <div className="flex flex-wrap gap-3">
+
+      <div className="flex flex-wrap gap-2.5">
         {CHANNELS.map((channel) => (
           <button
             key={channel}
             onClick={() => handleSimulate(channel)}
             disabled={isPending}
-            className="inline-flex items-center px-4 py-2 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 transition-colors text-sm font-medium"
+            className="inline-flex items-center px-3.5 py-2 border border-borderSubtle bg-surface-2 text-textSecondary hover:text-textPrimary hover:bg-surface-3 rounded-lg disabled:opacity-50 transition-colors text-xs font-medium focus-ring"
           >
             {isPending && activeChannel === channel ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin text-accent-400" />
             ) : (
-              <MessageSquare className="w-4 h-4 mr-2 text-slate-400" />
+              <MessageSquare className="w-3.5 h-3.5 mr-2 text-textTertiary" />
             )}
-            Import {channel}
+            <span>Import {channel}</span>
           </button>
         ))}
       </div>
 
       {result && (
-        <div className="mt-4 flex items-center text-sm text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
-          <CheckCircle2 className="w-4 h-4 mr-2" />
-          Successfully imported {result.count} {result.channel}.
+        <div className="mt-3 flex items-center text-xs text-semantic-success bg-semantic-success-bg border border-semantic-success/30 p-2.5 rounded-lg">
+          <CheckCircle2 className="w-3.5 h-3.5 mr-2 flex-shrink-0" />
+          <span>
+            Successfully imported <strong className="font-mono">{result.count}</strong> records from {result.channel}.
+          </span>
         </div>
       )}
     </div>
