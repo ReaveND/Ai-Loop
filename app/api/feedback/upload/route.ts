@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     const { valid, invalid } = await parseCsvString(text)
 
     if (valid.length > 0) {
-      await prisma.feedback.createMany({
+      const created = await prisma.feedback.createManyAndReturn({
         data: valid.map(row => ({
           content: row.content,
           channel: row.channel,
@@ -25,6 +25,14 @@ export async function POST(request: Request) {
           workspaceId: user.workspaceId,
           createdAt: row.createdAt ? new Date(row.createdAt) : undefined
         }))
+      })
+
+      // Asynchronously process classification and embeddings in the background
+      // so we don't block the HTTP response for large CSVs
+      const { processFeedbackClassification } = await import('@/lib/services/classification')
+      created.forEach(feedback => {
+        // Fire and forget
+        processFeedbackClassification(feedback.id).catch(console.error)
       })
     }
 

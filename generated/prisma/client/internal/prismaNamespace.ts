@@ -817,18 +817,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
           args: Prisma.EmbeddingFindManyArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddingPayload>[]
         }
-        create: {
-          args: Prisma.EmbeddingCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddingPayload>
-        }
-        createMany: {
-          args: Prisma.EmbeddingCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.EmbeddingCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddingPayload>[]
-        }
         delete: {
           args: Prisma.EmbeddingDeleteArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddingPayload>
@@ -848,10 +836,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         updateManyAndReturn: {
           args: Prisma.EmbeddingUpdateManyAndReturnArgs<ExtArgs>
           result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddingPayload>[]
-        }
-        upsert: {
-          args: Prisma.EmbeddingUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmbeddingPayload>
         }
         aggregate: {
           args: Prisma.EmbeddingAggregateArgs<ExtArgs>
@@ -1039,8 +1023,7 @@ export type FeedbackThemeScalarFieldEnum = (typeof FeedbackThemeScalarFieldEnum)
 
 export const EmbeddingScalarFieldEnum = {
   id: 'id',
-  feedbackId: 'feedbackId',
-  vector: 'vector'
+  feedbackId: 'feedbackId'
 } as const
 
 export type EmbeddingScalarFieldEnum = (typeof EmbeddingScalarFieldEnum)[keyof typeof EmbeddingScalarFieldEnum]

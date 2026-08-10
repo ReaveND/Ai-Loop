@@ -20,18 +20,8 @@ export type EmbeddingModel = runtime.Types.Result.DefaultSelection<Prisma.$Embed
 
 export type AggregateEmbedding = {
   _count: EmbeddingCountAggregateOutputType | null
-  _avg: EmbeddingAvgAggregateOutputType | null
-  _sum: EmbeddingSumAggregateOutputType | null
   _min: EmbeddingMinAggregateOutputType | null
   _max: EmbeddingMaxAggregateOutputType | null
-}
-
-export type EmbeddingAvgAggregateOutputType = {
-  vector: number | null
-}
-
-export type EmbeddingSumAggregateOutputType = {
-  vector: number[]
 }
 
 export type EmbeddingMinAggregateOutputType = {
@@ -47,18 +37,9 @@ export type EmbeddingMaxAggregateOutputType = {
 export type EmbeddingCountAggregateOutputType = {
   id: number
   feedbackId: number
-  vector: number
   _all: number
 }
 
-
-export type EmbeddingAvgAggregateInputType = {
-  vector?: true
-}
-
-export type EmbeddingSumAggregateInputType = {
-  vector?: true
-}
 
 export type EmbeddingMinAggregateInputType = {
   id?: true
@@ -73,7 +54,6 @@ export type EmbeddingMaxAggregateInputType = {
 export type EmbeddingCountAggregateInputType = {
   id?: true
   feedbackId?: true
-  vector?: true
   _all?: true
 }
 
@@ -115,18 +95,6 @@ export type EmbeddingAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: EmbeddingAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: EmbeddingSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: EmbeddingMinAggregateInputType
@@ -157,8 +125,6 @@ export type EmbeddingGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: EmbeddingCountAggregateInputType | true
-  _avg?: EmbeddingAvgAggregateInputType
-  _sum?: EmbeddingSumAggregateInputType
   _min?: EmbeddingMinAggregateInputType
   _max?: EmbeddingMaxAggregateInputType
 }
@@ -166,10 +132,7 @@ export type EmbeddingGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type EmbeddingGroupByOutputType = {
   id: string
   feedbackId: string
-  vector: number[]
   _count: EmbeddingCountAggregateOutputType | null
-  _avg: EmbeddingAvgAggregateOutputType | null
-  _sum: EmbeddingSumAggregateOutputType | null
   _min: EmbeddingMinAggregateOutputType | null
   _max: EmbeddingMaxAggregateOutputType | null
 }
@@ -195,14 +158,12 @@ export type EmbeddingWhereInput = {
   NOT?: Prisma.EmbeddingWhereInput | Prisma.EmbeddingWhereInput[]
   id?: Prisma.StringFilter<"Embedding"> | string
   feedbackId?: Prisma.StringFilter<"Embedding"> | string
-  vector?: Prisma.FloatNullableListFilter<"Embedding">
   feedback?: Prisma.XOR<Prisma.FeedbackScalarRelationFilter, Prisma.FeedbackWhereInput>
 }
 
 export type EmbeddingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   feedbackId?: Prisma.SortOrder
-  vector?: Prisma.SortOrder
   feedback?: Prisma.FeedbackOrderByWithRelationInput
 }
 
@@ -212,19 +173,15 @@ export type EmbeddingWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.EmbeddingWhereInput | Prisma.EmbeddingWhereInput[]
   OR?: Prisma.EmbeddingWhereInput[]
   NOT?: Prisma.EmbeddingWhereInput | Prisma.EmbeddingWhereInput[]
-  vector?: Prisma.FloatNullableListFilter<"Embedding">
   feedback?: Prisma.XOR<Prisma.FeedbackScalarRelationFilter, Prisma.FeedbackWhereInput>
 }, "id" | "feedbackId">
 
 export type EmbeddingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   feedbackId?: Prisma.SortOrder
-  vector?: Prisma.SortOrder
   _count?: Prisma.EmbeddingCountOrderByAggregateInput
-  _avg?: Prisma.EmbeddingAvgOrderByAggregateInput
   _max?: Prisma.EmbeddingMaxOrderByAggregateInput
   _min?: Prisma.EmbeddingMinOrderByAggregateInput
-  _sum?: Prisma.EmbeddingSumOrderByAggregateInput
 }
 
 export type EmbeddingScalarWhereWithAggregatesInput = {
@@ -233,48 +190,25 @@ export type EmbeddingScalarWhereWithAggregatesInput = {
   NOT?: Prisma.EmbeddingScalarWhereWithAggregatesInput | Prisma.EmbeddingScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Embedding"> | string
   feedbackId?: Prisma.StringWithAggregatesFilter<"Embedding"> | string
-  vector?: Prisma.FloatNullableListFilter<"Embedding">
-}
-
-export type EmbeddingCreateInput = {
-  id?: string
-  vector?: Prisma.EmbeddingCreatevectorInput | number[]
-  feedback: Prisma.FeedbackCreateNestedOneWithoutEmbeddingInput
-}
-
-export type EmbeddingUncheckedCreateInput = {
-  id?: string
-  feedbackId: string
-  vector?: Prisma.EmbeddingCreatevectorInput | number[]
 }
 
 export type EmbeddingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  vector?: Prisma.EmbeddingUpdatevectorInput | number[]
   feedback?: Prisma.FeedbackUpdateOneRequiredWithoutEmbeddingNestedInput
 }
 
 export type EmbeddingUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   feedbackId?: Prisma.StringFieldUpdateOperationsInput | string
-  vector?: Prisma.EmbeddingUpdatevectorInput | number[]
-}
-
-export type EmbeddingCreateManyInput = {
-  id?: string
-  feedbackId: string
-  vector?: Prisma.EmbeddingCreatevectorInput | number[]
 }
 
 export type EmbeddingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  vector?: Prisma.EmbeddingUpdatevectorInput | number[]
 }
 
 export type EmbeddingUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   feedbackId?: Prisma.StringFieldUpdateOperationsInput | string
-  vector?: Prisma.EmbeddingUpdatevectorInput | number[]
 }
 
 export type EmbeddingNullableScalarRelationFilter = {
@@ -282,22 +216,9 @@ export type EmbeddingNullableScalarRelationFilter = {
   isNot?: Prisma.EmbeddingWhereInput | null
 }
 
-export type FloatNullableListFilter<$PrismaModel = never> = {
-  equals?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
-  has?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
-  hasEvery?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
-  hasSome?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
-}
-
 export type EmbeddingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   feedbackId?: Prisma.SortOrder
-  vector?: Prisma.SortOrder
-}
-
-export type EmbeddingAvgOrderByAggregateInput = {
-  vector?: Prisma.SortOrder
 }
 
 export type EmbeddingMaxOrderByAggregateInput = {
@@ -310,26 +231,15 @@ export type EmbeddingMinOrderByAggregateInput = {
   feedbackId?: Prisma.SortOrder
 }
 
-export type EmbeddingSumOrderByAggregateInput = {
-  vector?: Prisma.SortOrder
-}
-
 export type EmbeddingCreateNestedOneWithoutFeedbackInput = {
-  create?: Prisma.XOR<Prisma.EmbeddingCreateWithoutFeedbackInput, Prisma.EmbeddingUncheckedCreateWithoutFeedbackInput>
-  connectOrCreate?: Prisma.EmbeddingCreateOrConnectWithoutFeedbackInput
   connect?: Prisma.EmbeddingWhereUniqueInput
 }
 
 export type EmbeddingUncheckedCreateNestedOneWithoutFeedbackInput = {
-  create?: Prisma.XOR<Prisma.EmbeddingCreateWithoutFeedbackInput, Prisma.EmbeddingUncheckedCreateWithoutFeedbackInput>
-  connectOrCreate?: Prisma.EmbeddingCreateOrConnectWithoutFeedbackInput
   connect?: Prisma.EmbeddingWhereUniqueInput
 }
 
 export type EmbeddingUpdateOneWithoutFeedbackNestedInput = {
-  create?: Prisma.XOR<Prisma.EmbeddingCreateWithoutFeedbackInput, Prisma.EmbeddingUncheckedCreateWithoutFeedbackInput>
-  connectOrCreate?: Prisma.EmbeddingCreateOrConnectWithoutFeedbackInput
-  upsert?: Prisma.EmbeddingUpsertWithoutFeedbackInput
   disconnect?: Prisma.EmbeddingWhereInput | boolean
   delete?: Prisma.EmbeddingWhereInput | boolean
   connect?: Prisma.EmbeddingWhereUniqueInput
@@ -337,43 +247,10 @@ export type EmbeddingUpdateOneWithoutFeedbackNestedInput = {
 }
 
 export type EmbeddingUncheckedUpdateOneWithoutFeedbackNestedInput = {
-  create?: Prisma.XOR<Prisma.EmbeddingCreateWithoutFeedbackInput, Prisma.EmbeddingUncheckedCreateWithoutFeedbackInput>
-  connectOrCreate?: Prisma.EmbeddingCreateOrConnectWithoutFeedbackInput
-  upsert?: Prisma.EmbeddingUpsertWithoutFeedbackInput
   disconnect?: Prisma.EmbeddingWhereInput | boolean
   delete?: Prisma.EmbeddingWhereInput | boolean
   connect?: Prisma.EmbeddingWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.EmbeddingUpdateToOneWithWhereWithoutFeedbackInput, Prisma.EmbeddingUpdateWithoutFeedbackInput>, Prisma.EmbeddingUncheckedUpdateWithoutFeedbackInput>
-}
-
-export type EmbeddingCreatevectorInput = {
-  set: number[]
-}
-
-export type EmbeddingUpdatevectorInput = {
-  set?: number[]
-  push?: number | number[]
-}
-
-export type EmbeddingCreateWithoutFeedbackInput = {
-  id?: string
-  vector?: Prisma.EmbeddingCreatevectorInput | number[]
-}
-
-export type EmbeddingUncheckedCreateWithoutFeedbackInput = {
-  id?: string
-  vector?: Prisma.EmbeddingCreatevectorInput | number[]
-}
-
-export type EmbeddingCreateOrConnectWithoutFeedbackInput = {
-  where: Prisma.EmbeddingWhereUniqueInput
-  create: Prisma.XOR<Prisma.EmbeddingCreateWithoutFeedbackInput, Prisma.EmbeddingUncheckedCreateWithoutFeedbackInput>
-}
-
-export type EmbeddingUpsertWithoutFeedbackInput = {
-  update: Prisma.XOR<Prisma.EmbeddingUpdateWithoutFeedbackInput, Prisma.EmbeddingUncheckedUpdateWithoutFeedbackInput>
-  create: Prisma.XOR<Prisma.EmbeddingCreateWithoutFeedbackInput, Prisma.EmbeddingUncheckedCreateWithoutFeedbackInput>
-  where?: Prisma.EmbeddingWhereInput
 }
 
 export type EmbeddingUpdateToOneWithWhereWithoutFeedbackInput = {
@@ -383,12 +260,10 @@ export type EmbeddingUpdateToOneWithWhereWithoutFeedbackInput = {
 
 export type EmbeddingUpdateWithoutFeedbackInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  vector?: Prisma.EmbeddingUpdatevectorInput | number[]
 }
 
 export type EmbeddingUncheckedUpdateWithoutFeedbackInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  vector?: Prisma.EmbeddingUpdatevectorInput | number[]
 }
 
 
@@ -396,35 +271,23 @@ export type EmbeddingUncheckedUpdateWithoutFeedbackInput = {
 export type EmbeddingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   feedbackId?: boolean
-  vector?: boolean
   feedback?: boolean | Prisma.FeedbackDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["embedding"]>
 
-export type EmbeddingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-  id?: boolean
-  feedbackId?: boolean
-  vector?: boolean
-  feedback?: boolean | Prisma.FeedbackDefaultArgs<ExtArgs>
-}, ExtArgs["result"]["embedding"]>
 
 export type EmbeddingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   feedbackId?: boolean
-  vector?: boolean
   feedback?: boolean | Prisma.FeedbackDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["embedding"]>
 
 export type EmbeddingSelectScalar = {
   id?: boolean
   feedbackId?: boolean
-  vector?: boolean
 }
 
-export type EmbeddingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "feedbackId" | "vector", ExtArgs["result"]["embedding"]>
+export type EmbeddingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "feedbackId", ExtArgs["result"]["embedding"]>
 export type EmbeddingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  feedback?: boolean | Prisma.FeedbackDefaultArgs<ExtArgs>
-}
-export type EmbeddingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   feedback?: boolean | Prisma.FeedbackDefaultArgs<ExtArgs>
 }
 export type EmbeddingIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -439,7 +302,6 @@ export type $EmbeddingPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     feedbackId: string
-    vector: number[]
   }, ExtArgs["result"]["embedding"]>
   composites: {}
 }
@@ -528,58 +390,6 @@ export interface EmbeddingDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * 
    */
   findMany<T extends EmbeddingFindManyArgs>(args?: Prisma.SelectSubset<T, EmbeddingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmbeddingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-  /**
-   * Create a Embedding.
-   * @param {EmbeddingCreateArgs} args - Arguments to create a Embedding.
-   * @example
-   * // Create one Embedding
-   * const Embedding = await prisma.embedding.create({
-   *   data: {
-   *     // ... data to create a Embedding
-   *   }
-   * })
-   * 
-   */
-  create<T extends EmbeddingCreateArgs>(args: Prisma.SelectSubset<T, EmbeddingCreateArgs<ExtArgs>>): Prisma.Prisma__EmbeddingClient<runtime.Types.Result.GetResult<Prisma.$EmbeddingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-  /**
-   * Create many Embeddings.
-   * @param {EmbeddingCreateManyArgs} args - Arguments to create many Embeddings.
-   * @example
-   * // Create many Embeddings
-   * const embedding = await prisma.embedding.createMany({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   *     
-   */
-  createMany<T extends EmbeddingCreateManyArgs>(args?: Prisma.SelectSubset<T, EmbeddingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
-
-  /**
-   * Create many Embeddings and returns the data saved in the database.
-   * @param {EmbeddingCreateManyAndReturnArgs} args - Arguments to create many Embeddings.
-   * @example
-   * // Create many Embeddings
-   * const embedding = await prisma.embedding.createManyAndReturn({
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * 
-   * // Create many Embeddings and only return the `id`
-   * const embeddingWithIdOnly = await prisma.embedding.createManyAndReturn({
-   *   select: { id: true },
-   *   data: [
-   *     // ... provide data here
-   *   ]
-   * })
-   * Note, that providing `undefined` is treated as the value not being there.
-   * Read more here: https://pris.ly/d/null-undefined
-   * 
-   */
-  createManyAndReturn<T extends EmbeddingCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, EmbeddingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmbeddingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Delete a Embedding.
@@ -674,25 +484,6 @@ export interface EmbeddingDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * 
    */
   updateManyAndReturn<T extends EmbeddingUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, EmbeddingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmbeddingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-  /**
-   * Create or update one Embedding.
-   * @param {EmbeddingUpsertArgs} args - Arguments to update or create a Embedding.
-   * @example
-   * // Update or create a Embedding
-   * const embedding = await prisma.embedding.upsert({
-   *   create: {
-   *     // ... data to create a Embedding
-   *   },
-   *   update: {
-   *     // ... in case it already exists, update
-   *   },
-   *   where: {
-   *     // ... the filter for the Embedding we want to update
-   *   }
-   * })
-   */
-  upsert<T extends EmbeddingUpsertArgs>(args: Prisma.SelectSubset<T, EmbeddingUpsertArgs<ExtArgs>>): Prisma.Prisma__EmbeddingClient<runtime.Types.Result.GetResult<Prisma.$EmbeddingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
   /**
@@ -866,7 +657,6 @@ export interface Prisma__EmbeddingClient<T, Null = never, ExtArgs extends runtim
 export interface EmbeddingFieldRefs {
   readonly id: Prisma.FieldRef<"Embedding", 'String'>
   readonly feedbackId: Prisma.FieldRef<"Embedding", 'String'>
-  readonly vector: Prisma.FieldRef<"Embedding", 'Float[]'>
 }
     
 
@@ -1072,62 +862,6 @@ export type EmbeddingFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * Embedding create
- */
-export type EmbeddingCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Embedding
-   */
-  select?: Prisma.EmbeddingSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Embedding
-   */
-  omit?: Prisma.EmbeddingOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.EmbeddingInclude<ExtArgs> | null
-  /**
-   * The data needed to create a Embedding.
-   */
-  data: Prisma.XOR<Prisma.EmbeddingCreateInput, Prisma.EmbeddingUncheckedCreateInput>
-}
-
-/**
- * Embedding createMany
- */
-export type EmbeddingCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * The data used to create many Embeddings.
-   */
-  data: Prisma.EmbeddingCreateManyInput | Prisma.EmbeddingCreateManyInput[]
-  skipDuplicates?: boolean
-}
-
-/**
- * Embedding createManyAndReturn
- */
-export type EmbeddingCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Embedding
-   */
-  select?: Prisma.EmbeddingSelectCreateManyAndReturn<ExtArgs> | null
-  /**
-   * Omit specific fields from the Embedding
-   */
-  omit?: Prisma.EmbeddingOmit<ExtArgs> | null
-  /**
-   * The data used to create many Embeddings.
-   */
-  data: Prisma.EmbeddingCreateManyInput | Prisma.EmbeddingCreateManyInput[]
-  skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.EmbeddingIncludeCreateManyAndReturn<ExtArgs> | null
-}
-
-/**
  * Embedding update
  */
 export type EmbeddingUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1199,36 +933,6 @@ export type EmbeddingUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Exten
    * Choose, which related nodes to fetch as well
    */
   include?: Prisma.EmbeddingIncludeUpdateManyAndReturn<ExtArgs> | null
-}
-
-/**
- * Embedding upsert
- */
-export type EmbeddingUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Embedding
-   */
-  select?: Prisma.EmbeddingSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Embedding
-   */
-  omit?: Prisma.EmbeddingOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.EmbeddingInclude<ExtArgs> | null
-  /**
-   * The filter to search for the Embedding to update in case it exists.
-   */
-  where: Prisma.EmbeddingWhereUniqueInput
-  /**
-   * In case the Embedding found by the `where` argument doesn't exist, create a new Embedding with this data.
-   */
-  create: Prisma.XOR<Prisma.EmbeddingCreateInput, Prisma.EmbeddingUncheckedCreateInput>
-  /**
-   * In case the Embedding was found with the provided `where` argument, update it with this data.
-   */
-  update: Prisma.XOR<Prisma.EmbeddingUpdateInput, Prisma.EmbeddingUncheckedUpdateInput>
 }
 
 /**

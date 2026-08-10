@@ -1,0 +1,21 @@
+\n[Ask LOOP] Request Body: {
+  "id": "rc9F9tbl7QEOJIiI",
+  "messages": [
+    {
+      "role": "user",
+      "content": "toggle button not working",
+      "id": "1785770818472"
+    }
+  ],
+  "trigger": "submit-message"
+}\n\n[Ask LOOP] User: admin@loop.local, Workspace: cmscz14a40000nkvj7aticoo4\n[Ask LOOP] Found 10 feedbacks for query: "toggle button not working"\n\n[Ask LOOP] Request Body: {
+  "id": "TwjZHJEQjIYIh8hU",
+  "messages": [
+    {
+      "role": "user",
+      "content": "The app keeps crashing when I try to export my report. Please fix ASAP. (Case #1017)",
+      "id": "1785770875956"
+    }
+  ],
+  "trigger": "submit-message"
+}\n\n[Ask LOOP] User: admin@loop.local, Workspace: cmscz14a40000nkvj7aticoo4\n[Ask LOOP] Found 10 feedbacks for query: "The app keeps crashing when I try to export my report. Please fix ASAP. (Case #1017)"\n

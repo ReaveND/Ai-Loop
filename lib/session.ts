@@ -1,8 +1,22 @@
 import { auth } from "@/lib/auth"
+import { prisma } from "@/lib/prisma"
 
 export async function getCurrentUser() {
   const session = await auth()
-  return session?.user
+  if (!session?.user?.email) return null
+  
+  // Verify user still exists in DB (protects against stale JWTs after db resets)
+  const dbUser = await prisma.user.findUnique({
+    where: { email: session.user.email }
+  })
+  
+  if (!dbUser) return null
+  
+  return {
+    ...session.user,
+    role: dbUser.role,
+    workspaceId: dbUser.workspaceId
+  }
 }
 
 export async function requireAuth() {

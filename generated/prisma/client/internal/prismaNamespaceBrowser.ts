@@ -135,8 +135,7 @@ export type FeedbackThemeScalarFieldEnum = (typeof FeedbackThemeScalarFieldEnum)
 
 export const EmbeddingScalarFieldEnum = {
   id: 'id',
-  feedbackId: 'feedbackId',
-  vector: 'vector'
+  feedbackId: 'feedbackId'
 } as const
 
 export type EmbeddingScalarFieldEnum = (typeof EmbeddingScalarFieldEnum)[keyof typeof EmbeddingScalarFieldEnum]

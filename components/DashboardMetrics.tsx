@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation"
 export default function DashboardMetrics({
   totalFeedback,
   newThisWeek,
-  negativePercentage,
+  volumeSpikePercentage,
+  negativePercentage
 }: {
   totalFeedback: number
   newThisWeek: number
+  volumeSpikePercentage: number
   negativePercentage: number
 }) {
   const router = useRouter()
@@ -49,19 +51,16 @@ export default function DashboardMetrics({
         <div className="w-14 h-14 rounded-xl bg-semantic-success-bg border border-semantic-success/20 text-semantic-success flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105">
           <TrendingUp className="w-6 h-6" />
         </div>
-        <div className="flex flex-col justify-center">
-          <span className="text-xs font-semibold text-textSecondary tracking-wide">
-            New This Week
-          </span>
-          <p className="text-3xl font-bold text-textPrimary tabular-nums tracking-tight mt-1">
-            {newThisWeek.toLocaleString()}
-          </p>
-          {hasData && (
-            <div className="flex items-center mt-1 text-xs font-medium text-semantic-success">
-              <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" />
-              <span>+8.4% velocity</span>
-            </div>
-          )}
+        <div>
+          <p className="text-sm font-medium text-slate-500">New This Week</p>
+          <div className="flex items-baseline gap-2">
+            <p className="text-2xl font-bold text-slate-900 dark:text-white">{newThisWeek.toLocaleString()}</p>
+            {volumeSpikePercentage !== 0 && (
+              <span className={`text-xs font-semibold ${volumeSpikePercentage > 0 ? 'text-red-500' : 'text-emerald-500'}`}>
+                {volumeSpikePercentage > 0 ? '↑' : '↓'} {Math.abs(volumeSpikePercentage)}%
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
