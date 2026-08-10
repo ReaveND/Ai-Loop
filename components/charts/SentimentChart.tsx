@@ -27,7 +27,7 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: { name
           </span>
         </div>
         <p className="mt-1 font-mono font-medium text-textSecondary">
-          {payload[0].value.toLocaleString()} <span className="text-textTertiary">items</span>
+          {payload[0].value.toLocaleString('en-US')} <span className="text-textTertiary">items</span>
         </p>
       </div>
     )
@@ -53,7 +53,7 @@ export default function SentimentChart({ data }: SentimentChartProps) {
         {/* Center Label for Donut */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pb-2">
           <span className="text-2xl font-bold text-textPrimary tabular-nums">
-            {visibleTotal.toLocaleString()}
+            {visibleTotal.toLocaleString('en-US')}
           </span>
           <span className="text-[11px] font-medium text-textSecondary uppercase tracking-wider">
             Total

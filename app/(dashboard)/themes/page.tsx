@@ -31,36 +31,36 @@ export default async function ThemesPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Themes & Trends</h1>
-        <p className="text-slate-500">Discover what customers are talking about most.</p>
+        <h1 className="text-3xl font-bold text-textPrimary mb-2">Themes & Trends</h1>
+        <p className="text-textSecondary">Discover what customers are talking about most.</p>
       </div>
       
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Top Themes</h2>
+      <div className="bg-surface-1 p-6 rounded-xl border border-borderSubtle shadow-sm">
+        <h2 className="text-lg font-semibold text-textPrimary mb-6">Top Themes</h2>
         <div className="max-w-3xl mb-8">
           {themesData.length > 0 ? (
              <ThemesChart data={themesData} />
           ) : (
-             <div className="text-slate-500">No themes detected yet.</div>
+             <div className="text-textSecondary">No themes detected yet.</div>
           )}
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+            <thead className="bg-surface-2/50 border-b border-borderSubtle">
               <tr>
-                <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Theme Name</th>
-                <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Mentions</th>
-                <th className="px-6 py-3 text-xs font-medium text-slate-500 uppercase tracking-wider">Action</th>
+                <th className="px-6 py-3 text-xs font-medium text-textSecondary uppercase tracking-wider">Theme Name</th>
+                <th className="px-6 py-3 text-xs font-medium text-textSecondary uppercase tracking-wider">Mentions</th>
+                <th className="px-6 py-3 text-xs font-medium text-textSecondary uppercase tracking-wider">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+            <tbody className="divide-y divide-borderSubtle">
               {themesData.map(item => (
-                <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 relative">
-                  <td className="px-6 py-4 text-sm font-medium text-slate-900 dark:text-white">
+                <tr key={item.id} className="hover:bg-surface-2/50 relative">
+                  <td className="px-6 py-4 text-sm font-medium text-textPrimary">
                     {item.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-textSecondary">
                     {item.count}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">

@@ -14,8 +14,8 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Dashboard</h1>
-        <p className="text-slate-500">Overview of your customer feedback and insights.</p>
+        <h1 className="text-3xl font-bold text-textPrimary mb-2">Dashboard</h1>
+        <p className="text-textSecondary">Overview of your customer feedback and insights.</p>
       </div>
       
       <DashboardMetrics 
@@ -26,8 +26,8 @@ export default async function DashboardPage() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">Feedback Volume (Last 30 Days)</h2>
+        <div className="bg-surface-1 p-6 rounded-xl border border-borderSubtle shadow-sm">
+          <h2 className="text-lg font-semibold text-textPrimary mb-6">Feedback Volume (Last 30 Days)</h2>
           <VolumeChart data={metrics.volumeData} />
         </div>
 

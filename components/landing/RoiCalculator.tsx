@@ -45,7 +45,7 @@ export default function RoiCalculator() {
                 Monthly Feedback Volume
               </span>
               <span className="text-xl font-bold font-mono text-accent-400 bg-accent-500/10 px-3 py-1 rounded-xl border border-accent-500/20">
-                {feedbackCount.toLocaleString()} items / mo
+                {feedbackCount.toLocaleString('en-US')} items / mo
               </span>
             </div>
 
@@ -91,10 +91,10 @@ export default function RoiCalculator() {
             </div>
             <div className="my-3">
               <p className="text-3xl font-extrabold text-semantic-success tabular-nums">
-                ${dollarsSaved.toLocaleString()}
+                ${dollarsSaved.toLocaleString('en-US')}
               </p>
               <p className="text-xs text-textSecondary font-medium mt-0.5">
-                ${(dollarsSaved * 12).toLocaleString()} annual savings
+                ${(dollarsSaved * 12).toLocaleString('en-US')} annual savings
               </p>
             </div>
           </div>
