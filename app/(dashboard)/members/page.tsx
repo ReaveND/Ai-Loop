@@ -6,7 +6,7 @@ export default async function MembersPage() {
   const user = await getCurrentUser()
   let members: { id: string; name: string | null; email: string; role: string }[] = []
   let error: string | null = null
-  
+
   try {
     members = await getMembers()
   } catch {
@@ -14,14 +14,9 @@ export default async function MembersPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Workspace Members & Roles</h1>
-        <p className="text-slate-500">Manage your team members and configure role-based access permissions.</p>
-      </div>
-      
+    <div className="space-y-6">
       {error ? (
-        <div className="p-4 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-xl border border-red-200 dark:border-red-800">
+        <div className="p-4 bg-semantic-danger-bg border border-semantic-danger/30 text-semantic-danger rounded-xl text-sm font-medium">
           {error}
         </div>
       ) : (

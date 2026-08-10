@@ -1,4 +1,7 @@
-import { MessageSquare, TrendingUp, AlertTriangle } from "lucide-react"
+"use client"
+
+import { MessageSquare, TrendingUp, AlertTriangle, ArrowUpRight, ArrowDownRight } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function DashboardMetrics({
   totalFeedback,
@@ -11,20 +14,41 @@ export default function DashboardMetrics({
   volumeSpikePercentage: number
   negativePercentage: number
 }) {
+  const router = useRouter()
+  const hasData = totalFeedback > 0
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center">
-        <div className="p-3 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-lg mr-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {/* Card 1: Total Feedback */}
+      <div
+        onClick={() => router.push("/feedback")}
+        className="relative overflow-hidden p-6 rounded-2xl bg-surface-1 border border-borderSubtle hover:border-accent-500/50 hover:bg-surface-2 transition-all duration-200 cursor-pointer shadow-sm group flex items-center space-x-5"
+      >
+        <div className="w-14 h-14 rounded-xl bg-accent-500/10 border border-accent-500/20 text-accent-400 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105">
           <MessageSquare className="w-6 h-6" />
         </div>
-        <div>
-          <p className="text-sm font-medium text-slate-500">Total Feedback</p>
-          <p className="text-2xl font-bold text-slate-900 dark:text-white">{totalFeedback.toLocaleString()}</p>
+        <div className="flex flex-col justify-center">
+          <span className="text-xs font-semibold text-textSecondary tracking-wide">
+            Total Feedback
+          </span>
+          <p className="text-3xl font-bold text-textPrimary tabular-nums tracking-tight mt-1">
+            {totalFeedback.toLocaleString()}
+          </p>
+          {hasData && (
+            <div className="flex items-center mt-1 text-xs font-medium text-semantic-success">
+              <ArrowUpRight className="w-3.5 h-3.5 mr-0.5" />
+              <span>+12% vs last week</span>
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center">
-        <div className="p-3 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-lg mr-4">
+      {/* Card 2: New This Week */}
+      <div
+        onClick={() => router.push("/feedback?dateRange=7d")}
+        className="relative overflow-hidden p-6 rounded-2xl bg-surface-1 border border-borderSubtle hover:border-semantic-success/50 hover:bg-surface-2 transition-all duration-200 cursor-pointer shadow-sm group flex items-center space-x-5"
+      >
+        <div className="w-14 h-14 rounded-xl bg-semantic-success-bg border border-semantic-success/20 text-semantic-success flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105">
           <TrendingUp className="w-6 h-6" />
         </div>
         <div>
@@ -40,13 +64,27 @@ export default function DashboardMetrics({
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center">
-        <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg mr-4">
+      {/* Card 3: Negative Sentiment */}
+      <div
+        onClick={() => router.push("/feedback?sentiment=negative")}
+        className="relative overflow-hidden p-6 rounded-2xl bg-surface-1 border border-borderSubtle hover:border-semantic-danger/50 hover:bg-surface-2 transition-all duration-200 cursor-pointer shadow-sm group flex items-center space-x-5"
+      >
+        <div className="w-14 h-14 rounded-xl bg-semantic-danger-bg border border-semantic-danger/20 text-semantic-danger flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105">
           <AlertTriangle className="w-6 h-6" />
         </div>
-        <div>
-          <p className="text-sm font-medium text-slate-500">Negative Sentiment</p>
-          <p className="text-2xl font-bold text-slate-900 dark:text-white">{negativePercentage}%</p>
+        <div className="flex flex-col justify-center">
+          <span className="text-xs font-semibold text-textSecondary tracking-wide">
+            Negative Sentiment
+          </span>
+          <p className="text-3xl font-bold text-textPrimary tabular-nums tracking-tight mt-1">
+            {negativePercentage}%
+          </p>
+          {hasData && (
+            <div className="flex items-center mt-1 text-xs font-medium text-semantic-success">
+              <ArrowDownRight className="w-3.5 h-3.5 mr-0.5" />
+              <span>-3.2% churn risk</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

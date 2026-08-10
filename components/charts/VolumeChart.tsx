@@ -1,43 +1,67 @@
 "use client"
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import React from "react"
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 
-export default function VolumeChart({ data }: { data: { date: string, count: number }[] }) {
-  // Format date for display (e.g., "MM/DD")
+interface VolumeChartProps {
+  data: { date: string; count: number }[]
+}
+
+const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: string }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-surface-2 border border-borderStrong rounded-lg p-2.5 shadow-xl text-xs">
+        <p className="font-semibold text-textPrimary mb-0.5">{label}</p>
+        <p className="text-accent-400 font-mono font-medium">
+          {payload[0].value} <span className="text-textSecondary">feedback items</span>
+        </p>
+      </div>
+    )
+  }
+  return null
+}
+
+export default function VolumeChart({ data }: VolumeChartProps) {
   const formattedData = data.map(item => ({
     ...item,
-    displayDate: new Date(item.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+    displayDate: new Date(item.date).toLocaleDateString(undefined, { month: "short", day: "numeric" }),
   }))
 
   return (
     <div className="h-[300px] w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={formattedData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-          <XAxis 
-            dataKey="displayDate" 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: '#64748b', fontSize: 12 }} 
-            dy={10}
+        <AreaChart data={formattedData} margin={{ top: 10, right: 20, bottom: 5, left: -10 }}>
+          <defs>
+            <linearGradient id="volumeGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#3B5BFF" stopOpacity={0.35} />
+              <stop offset="95%" stopColor="#3B5BFF" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid stroke="#1D243A" vertical={false} strokeWidth={1} />
+          <XAxis
+            dataKey="displayDate"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: "#9AA3B8", fontSize: 11 }}
+            dy={8}
           />
-          <YAxis 
-            axisLine={false} 
-            tickLine={false} 
-            tick={{ fill: '#64748b', fontSize: 12 }}
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            tick={{ fill: "#9AA3B8", fontSize: 11 }}
+            dx={-8}
           />
-          <Tooltip 
-            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+          <Tooltip content={<CustomTooltip />} />
+          <Area
+            type="monotone"
+            dataKey="count"
+            stroke="#3B5BFF"
+            strokeWidth={2}
+            fillOpacity={1}
+            fill="url(#volumeGradient)"
+            activeDot={{ r: 5, fill: "#3B5BFF", stroke: "#F4F6FB", strokeWidth: 2 }}
           />
-          <Line 
-            type="monotone" 
-            dataKey="count" 
-            stroke="#6366f1" 
-            strokeWidth={3} 
-            dot={false}
-            activeDot={{ r: 6, fill: "#6366f1", stroke: "#fff", strokeWidth: 2 }}
-          />
-        </LineChart>
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   )

@@ -2,7 +2,20 @@
 
 import { useState, useTransition } from "react"
 import { inviteMemberAction, updateMemberRoleAction, deleteMemberAction } from "@/app/actions/members"
-import { UserPlus, Shield, Trash2, Loader2, CheckCircle2, AlertCircle, Mail, User, Lock } from "lucide-react"
+import {
+  UserPlus,
+  Shield,
+  Trash2,
+  Loader2,
+  AlertCircle,
+  Mail,
+  User,
+  Lock,
+  Copy,
+  Link as LinkIcon,
+  HelpCircle,
+} from "lucide-react"
+import { useToast } from "@/components/ToastProvider"
 
 type Member = {
   id: string
@@ -11,7 +24,13 @@ type Member = {
   role: string
 }
 
-export default function MembersManager({ members, currentUserId }: { members: Member[]; currentUserId?: string }) {
+export default function MembersManager({
+  members,
+  currentUserId,
+}: {
+  members: Member[]
+  currentUserId?: string
+}) {
   const [isPending, startTransition] = useTransition()
   const [showInviteModal, setShowInviteModal] = useState(false)
   const [name, setName] = useState("")
@@ -19,12 +38,13 @@ export default function MembersManager({ members, currentUserId }: { members: Me
   const [password, setPassword] = useState("")
   const [role, setRole] = useState("ANALYST")
   const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
+  const { toast } = useToast()
+
+  const defaultInviteUrl = "https://app.loop.ai/invite/loop-team-default"
 
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
-    setSuccess(null)
 
     const formData = new FormData()
     formData.append("name", name)
@@ -36,28 +56,34 @@ export default function MembersManager({ members, currentUserId }: { members: Me
       const res = await inviteMemberAction(formData)
       if (res.error) {
         setError(res.error)
+        toast({ title: "Invite failed", description: res.error, variant: "danger" })
       } else {
-        setSuccess("Teammate invited successfully!")
+        toast({
+          title: "Teammate Invited",
+          description: `Account created for ${email} with role ${role}.`,
+          variant: "success",
+        })
         setName("")
         setEmail("")
         setPassword("")
         setRole("ANALYST")
         setShowInviteModal(false)
-        setTimeout(() => setSuccess(null), 4000)
       }
     })
   }
 
   const handleRoleChange = (memberId: string, newRole: string) => {
     setError(null)
-    setSuccess(null)
     startTransition(async () => {
       const res = await updateMemberRoleAction(memberId, newRole)
       if (res.error) {
-        setError(res.error)
+        toast({ title: "Role update failed", description: res.error, variant: "danger" })
       } else {
-        setSuccess("Role updated successfully.")
-        setTimeout(() => setSuccess(null), 3000)
+        toast({
+          title: "Role updated",
+          description: `Teammate permissions set to ${newRole}.`,
+          variant: "success",
+        })
       }
     })
   }
@@ -65,25 +91,37 @@ export default function MembersManager({ members, currentUserId }: { members: Me
   const handleDelete = (memberId: string, memberEmail: string) => {
     if (!confirm(`Are you sure you want to remove ${memberEmail} from the workspace?`)) return
     setError(null)
-    setSuccess(null)
     startTransition(async () => {
       const res = await deleteMemberAction(memberId)
       if (res.error) {
-        setError(res.error)
+        toast({ title: "Remove failed", description: res.error, variant: "danger" })
       } else {
-        setSuccess("Member removed.")
-        setTimeout(() => setSuccess(null), 3000)
+        toast({
+          title: "Member removed",
+          description: `${memberEmail} has been removed from the workspace.`,
+          variant: "default",
+        })
       }
     })
   }
 
+  const copyInviteLink = () => {
+    navigator.clipboard.writeText(defaultInviteUrl)
+    toast({
+      title: "Invite Link Copied",
+      description: "Share this link with your teammate to join directly.",
+      variant: "success",
+    })
+  }
+
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div className="space-y-8">
+      {/* Top Header & Invite Button */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-borderSubtle pb-5">
         <div>
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Workspace Team</h2>
-          <p className="text-sm text-slate-500">
-            Invite teammates and assign roles (ADMIN, ANALYST, VIEWER) to control workspace permissions.
+          <h2 className="text-2xl font-bold text-textPrimary mb-1">Workspace Team & Roles</h2>
+          <p className="text-sm text-textSecondary">
+            Manage your team members and assign role-based access permissions (RBAC).
           </p>
         </div>
         <button
@@ -91,43 +129,41 @@ export default function MembersManager({ members, currentUserId }: { members: Me
             setShowInviteModal(!showInviteModal)
             setError(null)
           }}
-          className="inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-xl transition-colors shadow-sm"
+          className="inline-flex items-center justify-center px-4 py-2.5 bg-accent-500 hover:bg-accent-400 text-white font-semibold text-xs rounded-lg transition-colors shadow-sm focus-ring"
         >
           <UserPlus className="w-4 h-4 mr-2" />
-          Invite Teammate
+          <span>Invite Teammate</span>
         </button>
       </div>
 
       {error && (
-        <div className="flex items-center p-4 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-xl border border-red-200 dark:border-red-800 text-sm">
-          <AlertCircle className="w-5 h-5 mr-3 flex-shrink-0" />
+        <div className="flex items-center p-3.5 bg-semantic-danger-bg text-semantic-danger rounded-xl border border-semantic-danger/30 text-xs">
+          <AlertCircle className="w-4 h-4 mr-2.5 flex-shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
-      {success && (
-        <div className="flex items-center p-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-xl border border-green-200 dark:border-green-800 text-sm">
-          <CheckCircle2 className="w-5 h-5 mr-3 flex-shrink-0" />
-          <span>{success}</span>
-        </div>
-      )}
-
+      {/* Invite Modal Card */}
       {showInviteModal && (
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-lg space-y-5 animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
+        <div className="bg-surface-1 p-6 rounded-2xl border border-borderStrong shadow-xl space-y-5 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="flex items-center justify-between border-b border-borderSubtle pb-4">
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Invite New Teammate</h3>
-              <p className="text-xs text-slate-500 mt-0.5">Create a login account for your teammate and assign a role.</p>
+              <h3 className="text-base font-semibold text-textPrimary">Invite New Teammate</h3>
+              <p className="text-xs text-textSecondary mt-0.5">
+                Create a login account for your teammate and assign a role.
+              </p>
             </div>
           </div>
 
           <form onSubmit={handleInvite} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
+                <label className="block text-xs font-medium text-textSecondary mb-1.5">
+                  Full Name
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-4 w-4 text-slate-400" />
+                    <User className="h-4 w-4 text-textTertiary" />
                   </div>
                   <input
                     type="text"
@@ -135,16 +171,18 @@ export default function MembersManager({ members, currentUserId }: { members: Me
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Jane Doe"
-                    className="block w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="block w-full pl-9 pr-3 py-2 border border-borderSubtle rounded-lg bg-surface-2 text-textPrimary text-xs focus:outline-none input-glow"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email Address</label>
+                <label className="block text-xs font-medium text-textSecondary mb-1.5">
+                  Email Address
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-4 w-4 text-slate-400" />
+                    <Mail className="h-4 w-4 text-textTertiary" />
                   </div>
                   <input
                     type="email"
@@ -152,16 +190,18 @@ export default function MembersManager({ members, currentUserId }: { members: Me
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="jane@company.com"
-                    className="block w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="block w-full pl-9 pr-3 py-2 border border-borderSubtle rounded-lg bg-surface-2 text-textPrimary text-xs focus:outline-none input-glow"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">Initial Password</label>
+                <label className="block text-xs font-medium text-textSecondary mb-1.5">
+                  Initial Password
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-4 w-4 text-slate-400" />
+                    <Lock className="h-4 w-4 text-textTertiary" />
                   </div>
                   <input
                     type="password"
@@ -170,21 +210,23 @@ export default function MembersManager({ members, currentUserId }: { members: Me
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Min. 6 characters"
-                    className="block w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="block w-full pl-9 pr-3 py-2 border border-borderSubtle rounded-lg bg-surface-2 text-textPrimary text-xs focus:outline-none input-glow"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">Assigned Role</label>
+                <label className="block text-xs font-medium text-textSecondary mb-1.5">
+                  Assigned Role
+                </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Shield className="h-4 w-4 text-slate-400" />
+                    <Shield className="h-4 w-4 text-textTertiary" />
                   </div>
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    className="block w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="block w-full pl-9 pr-3 py-2 border border-borderSubtle rounded-lg bg-surface-2 text-textPrimary text-xs focus:outline-none input-glow"
                   >
                     <option value="ANALYST">ANALYST — Ingest & manage feedback</option>
                     <option value="VIEWER">VIEWER — Read-only access</option>
@@ -194,50 +236,71 @@ export default function MembersManager({ members, currentUserId }: { members: Me
               </div>
             </div>
 
-            <div className="flex items-center justify-end space-x-3 pt-2">
+            {/* Quick Copy Invite Link Bar */}
+            <div className="p-3 rounded-lg bg-surface-2 border border-borderSubtle flex items-center justify-between mt-3">
+              <div className="flex items-center space-x-2 overflow-hidden">
+                <LinkIcon className="w-4 h-4 text-accent-400 flex-shrink-0" />
+                <span className="text-xs font-mono text-textSecondary truncate">
+                  {defaultInviteUrl}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={copyInviteLink}
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-md bg-surface-1 hover:bg-surface-3 border border-borderSubtle text-xs font-medium text-textPrimary transition-colors flex-shrink-0 focus-ring"
+              >
+                <Copy className="w-3.5 h-3.5" />
+                <span>Copy Link</span>
+              </button>
+            </div>
+
+            <div className="flex items-center justify-end space-x-3 pt-3 border-t border-borderSubtle">
               <button
                 type="button"
                 onClick={() => setShowInviteModal(false)}
-                className="px-4 py-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                className="px-4 py-2 text-xs font-medium text-textSecondary hover:text-textPrimary"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isPending}
-                className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+                className="inline-flex items-center px-4 py-2 bg-accent-500 hover:bg-accent-400 text-white text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 focus-ring"
               >
-                {isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-                Create Teammate Account
+                {isPending ? <Loader2 className="w-3.5 h-3.5 mr-2 animate-spin" /> : null}
+                <span>Create Teammate Account</span>
               </button>
             </div>
           </form>
         </div>
       )}
 
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+      {/* Member List Table */}
+      <div className="bg-surface-1 border border-borderSubtle rounded-xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-surface-2 border-b border-borderSubtle text-textSecondary text-xs uppercase tracking-wider">
               <tr>
-                <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Member Name</th>
-                <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Email Address</th>
-                <th className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Role Permissions</th>
-                <th className="px-6 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3.5 font-semibold">Member Name</th>
+                <th className="px-6 py-3.5 font-semibold">Email Address</th>
+                <th className="px-6 py-3.5 font-semibold">Role Permissions</th>
+                <th className="px-6 py-3.5 text-right font-semibold">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+            <tbody className="divide-y divide-borderSubtle text-sm">
               {members.map(member => (
-                <tr key={member.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                <tr key={member.id} className="hover:bg-surface-2 transition-colors h-16">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 flex items-center justify-center font-semibold text-xs mr-3">
+                      <div className="w-8 h-8 rounded-full bg-accent-50 text-accent-400 flex items-center justify-center font-bold text-xs mr-3 shadow-inner">
                         {(member.name || member.email)[0].toUpperCase()}
                       </div>
-                      <span className="text-sm font-medium text-slate-900 dark:text-white">{member.name || "Unnamed"}</span>
+                      <span className="text-sm font-medium text-textPrimary">
+                        {member.name || "Unnamed"}
+                      </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 dark:text-slate-400">
+                  <td className="px-6 py-4 whitespace-nowrap text-xs text-textSecondary font-mono">
                     {member.email}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -245,11 +308,13 @@ export default function MembersManager({ members, currentUserId }: { members: Me
                       value={member.role}
                       disabled={isPending}
                       onChange={(e) => handleRoleChange(member.id, e.target.value)}
-                      className={`px-2.5 py-1 text-xs font-semibold rounded-full border outline-none cursor-pointer transition-colors
-                        ${member.role === "ADMIN" ? "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800" : ""}
-                        ${member.role === "ANALYST" ? "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800" : ""}
-                        ${member.role === "VIEWER" ? "bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700" : ""}
-                      `}
+                      className={`px-3 py-1 text-xs font-semibold rounded-full border outline-none cursor-pointer transition-colors ${
+                        member.role === "ADMIN"
+                          ? "bg-accent-500/10 text-accent-400 border-accent-500/30"
+                          : member.role === "ANALYST"
+                          ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/30"
+                          : "bg-surface-2 text-textSecondary border-borderSubtle"
+                      }`}
                     >
                       <option value="ADMIN">ADMIN</option>
                       <option value="ANALYST">ANALYST</option>
@@ -259,10 +324,11 @@ export default function MembersManager({ members, currentUserId }: { members: Me
                   <td className="px-6 py-4 whitespace-nowrap text-right">
                     {member.id !== currentUserId && (
                       <button
+                        type="button"
                         onClick={() => handleDelete(member.id, member.email)}
                         disabled={isPending}
                         title="Remove member"
-                        className="text-slate-400 hover:text-red-600 dark:hover:text-red-400 p-1 rounded transition-colors disabled:opacity-50"
+                        className="text-textTertiary hover:text-semantic-danger p-1.5 rounded-lg hover:bg-surface-3 transition-colors disabled:opacity-50"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -272,9 +338,65 @@ export default function MembersManager({ members, currentUserId }: { members: Me
               ))}
               {members.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-slate-500">No members found</td>
+                  <td colSpan={4} className="px-6 py-8 text-center text-xs text-textSecondary">
+                    No workspace members found
+                  </td>
                 </tr>
               )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Role Capabilities Comparison Card */}
+      <div className="bg-surface-1 border border-borderSubtle rounded-xl p-6 shadow-sm">
+        <div className="flex items-center space-x-2 mb-4">
+          <HelpCircle className="w-4 h-4 text-accent-400" />
+          <h3 className="text-sm font-semibold text-textPrimary">
+            Role Permission Capabilities
+          </h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-borderSubtle text-textSecondary">
+                <th className="py-2.5 pr-4 font-semibold">Capability</th>
+                <th className="py-2.5 px-4 font-semibold text-accent-400">ADMIN</th>
+                <th className="py-2.5 px-4 font-semibold text-indigo-400">ANALYST</th>
+                <th className="py-2.5 pl-4 font-semibold text-textSecondary">VIEWER</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-borderSubtle">
+              <tr>
+                <td className="py-2.5 pr-4 text-textPrimary">View dashboard charts & inbox</td>
+                <td className="py-2.5 px-4 text-semantic-success font-medium">Yes</td>
+                <td className="py-2.5 px-4 text-semantic-success font-medium">Yes</td>
+                <td className="py-2.5 pl-4 text-semantic-success font-medium">Yes</td>
+              </tr>
+              <tr>
+                <td className="py-2.5 pr-4 text-textPrimary">Add manual feedback & upload CSV</td>
+                <td className="py-2.5 px-4 text-semantic-success font-medium">Yes</td>
+                <td className="py-2.5 px-4 text-semantic-success font-medium">Yes</td>
+                <td className="py-2.5 pl-4 text-textTertiary">No</td>
+              </tr>
+              <tr>
+                <td className="py-2.5 pr-4 text-textPrimary">Update feedback status (NEW → ACTIONED)</td>
+                <td className="py-2.5 px-4 text-semantic-success font-medium">Yes</td>
+                <td className="py-2.5 px-4 text-semantic-success font-medium">Yes</td>
+                <td className="py-2.5 pl-4 text-textTertiary">No</td>
+              </tr>
+              <tr>
+                <td className="py-2.5 pr-4 text-textPrimary">Invite & remove workspace teammates</td>
+                <td className="py-2.5 px-4 text-semantic-success font-medium">Yes</td>
+                <td className="py-2.5 px-4 text-textTertiary">No</td>
+                <td className="py-2.5 pl-4 text-textTertiary">No</td>
+              </tr>
+              <tr>
+                <td className="py-2.5 pr-4 text-textPrimary">Change member RBAC roles</td>
+                <td className="py-2.5 px-4 text-semantic-success font-medium">Yes</td>
+                <td className="py-2.5 px-4 text-textTertiary">No</td>
+                <td className="py-2.5 pl-4 text-textTertiary">No</td>
+              </tr>
             </tbody>
           </table>
         </div>

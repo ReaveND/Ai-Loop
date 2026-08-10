@@ -7,7 +7,7 @@ import { Users, MessageSquare, LayoutDashboard, Settings, LogOut, TrendingUp, Sp
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
-  
+
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950">
       <aside className="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col">
