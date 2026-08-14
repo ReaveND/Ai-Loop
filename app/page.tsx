@@ -609,55 +609,55 @@ export default function LandingPage() {
       </main>
 
       {/* Comprehensive 4-Column Enterprise Footer */}
-      <footer className="border-t border-borderSubtle bg-surface-1/80 py-16 px-6">
+      <footer className="relative z-10 border-t border-white/10 bg-surface-1/85 backdrop-blur-xl py-16 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10">
           {/* Col 1: Logo & Mission */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center space-x-2.5">
-              <div className="w-8 h-8 rounded-lg bg-accent-500 flex items-center justify-center text-white font-bold text-xs">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-500 to-accent-400 flex items-center justify-center text-white font-bold text-xs shadow-md shadow-accent-500/20">
                 LP
               </div>
-              <span className="text-lg font-bold text-textPrimary">LOOP</span>
+              <span className="text-lg font-bold text-white tracking-tight">LOOP</span>
             </div>
-            <p className="text-xs text-textSecondary max-w-sm leading-relaxed">
+            <p className="text-sm text-slate-300 max-w-sm leading-relaxed">
               LOOP is an AI-powered customer feedback intelligence platform built for B2B SaaS product and support leaders.
             </p>
-            <div className="text-[11px] text-textTertiary">
+            <div className="text-xs text-slate-400 font-medium">
               © {new Date().getFullYear()} LOOP Inc. All rights reserved.
             </div>
           </div>
 
           {/* Col 2: Product */}
-          <div className="space-y-3 text-xs">
-            <h4 className="font-bold text-textPrimary uppercase tracking-wider text-[11px]">Product</h4>
-            <ul className="space-y-2 text-textSecondary">
-              <li><a href="#features" className="hover:text-textPrimary transition-colors">Unified Inbox</a></li>
-              <li><a href="#features" className="hover:text-textPrimary transition-colors">AI Sentiment Engine</a></li>
-              <li><a href="#features" className="hover:text-textPrimary transition-colors">Theme Discovery</a></li>
-              <li><a href="#features" className="hover:text-textPrimary transition-colors">Linear &amp; Jira Sync</a></li>
-              <li><a href="#features" className="hover:text-textPrimary transition-colors">Security &amp; SOC2</a></li>
+          <div className="space-y-3 text-sm">
+            <h4 className="font-bold text-white uppercase tracking-wider text-xs">Product</h4>
+            <ul className="space-y-2.5 text-slate-300 font-medium">
+              <li><a href="#features" className="hover:text-white transition-colors">Unified Inbox</a></li>
+              <li><a href="#features" className="hover:text-white transition-colors">AI Sentiment Engine</a></li>
+              <li><a href="#features" className="hover:text-white transition-colors">Theme Discovery</a></li>
+              <li><a href="#features" className="hover:text-white transition-colors">Linear &amp; Jira Sync</a></li>
+              <li><a href="#features" className="hover:text-white transition-colors">Security &amp; SOC2</a></li>
             </ul>
           </div>
 
           {/* Col 3: Solutions */}
-          <div className="space-y-3 text-xs">
-            <h4 className="font-bold text-textPrimary uppercase tracking-wider text-[11px]">Solutions</h4>
-            <ul className="space-y-2 text-textSecondary">
-              <li><a href="#roi" className="hover:text-textPrimary transition-colors">For Product Managers</a></li>
-              <li><a href="#roi" className="hover:text-textPrimary transition-colors">For Support Leaders</a></li>
-              <li><a href="#roi" className="hover:text-textPrimary transition-colors">For SaaS Founders</a></li>
-              <li><a href="#pricing" className="hover:text-textPrimary transition-colors">Enterprise Pricing</a></li>
+          <div className="space-y-3 text-sm">
+            <h4 className="font-bold text-white uppercase tracking-wider text-xs">Solutions</h4>
+            <ul className="space-y-2.5 text-slate-300 font-medium">
+              <li><a href="#roi" className="hover:text-white transition-colors">For Product Managers</a></li>
+              <li><a href="#roi" className="hover:text-white transition-colors">For Support Leaders</a></li>
+              <li><a href="#roi" className="hover:text-white transition-colors">For SaaS Founders</a></li>
+              <li><a href="#pricing" className="hover:text-white transition-colors">Enterprise Pricing</a></li>
             </ul>
           </div>
 
           {/* Col 4: Legal & Security */}
-          <div className="space-y-3 text-xs">
-            <h4 className="font-bold text-textPrimary uppercase tracking-wider text-[11px]">Legal</h4>
-            <ul className="space-y-2 text-textSecondary">
-              <li><a href="#" className="hover:text-textPrimary transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-textPrimary transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-textPrimary transition-colors">Security Audit Report</a></li>
-              <li><a href="#" className="hover:text-textPrimary transition-colors">Cookie Preferences</a></li>
+          <div className="space-y-3 text-sm">
+            <h4 className="font-bold text-white uppercase tracking-wider text-xs">Legal</h4>
+            <ul className="space-y-2.5 text-slate-300 font-medium">
+              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Security Audit Report</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Cookie Preferences</a></li>
             </ul>
           </div>
         </div>
