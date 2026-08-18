@@ -16,6 +16,8 @@ import {
   X,
   Sparkles,
   ChevronsUpDown,
+  TrendingUp,
+  FileText,
 } from "lucide-react"
 import { logoutAction } from "@/app/actions"
 
@@ -32,6 +34,9 @@ interface SidebarProps {
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/feedback", label: "Feedback", icon: MessageSquare },
+  { href: "/themes", label: "Themes & Trends", icon: TrendingUp },
+  { href: "/ask", label: "Ask LOOP", icon: Sparkles },
+  { href: "/reports", label: "Reports", icon: FileText },
   { href: "/members", label: "Members", icon: Users },
   { href: "/settings", label: "Settings", icon: Settings },
 ]

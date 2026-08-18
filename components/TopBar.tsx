@@ -15,6 +15,9 @@ export default function TopBar({ onOpenMobileSidebar, workspaceName = "Primary W
   const getPageTitle = (path: string) => {
     if (path.startsWith("/dashboard")) return "Dashboard"
     if (path.startsWith("/feedback")) return "Feedback Inbox"
+    if (path.startsWith("/themes")) return "Themes & Trends"
+    if (path.startsWith("/ask")) return "Ask LOOP"
+    if (path.startsWith("/reports")) return "Reports"
     if (path.startsWith("/members")) return "Workspace Members"
     if (path.startsWith("/settings")) return "Settings"
     return "Workspace"
