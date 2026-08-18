@@ -2,7 +2,7 @@ import { requireAuth } from "@/lib/session"
 import { getDashboardMetrics } from "@/lib/services/dashboard"
 import { generateVocReport } from "@/lib/ai"
 import { prisma } from "@/lib/prisma"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 
 export async function POST() {
   try {

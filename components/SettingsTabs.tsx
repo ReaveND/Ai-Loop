@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
+import Image from "next/image"
 import {
   Building2,
   Bell,
@@ -124,10 +125,13 @@ export default function SettingsTabs({
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-16 rounded-2xl bg-surface-2 border border-borderStrong flex items-center justify-center overflow-hidden shadow-inner flex-shrink-0">
                     {logoPreview ? (
-                      <img
+                      <Image
                         src={logoPreview}
                         alt="Logo Preview"
+                        width={64}
+                        height={64}
                         className="w-full h-full object-cover"
+                        unoptimized
                       />
                     ) : (
                       <span className="text-lg font-bold text-accent-400">
