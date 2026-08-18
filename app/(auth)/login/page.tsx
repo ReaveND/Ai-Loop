@@ -2,11 +2,12 @@
 
 import { loginAction, logoutAction } from "@/app/actions"
 import Link from "next/link"
-import { useState, useTransition, useEffect } from "react"
+import { useState, useTransition, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { Loader2, Eye, EyeOff, AlertCircle, ArrowLeft } from "lucide-react"
 
-export default function LoginPage() {
+// Inner component that uses useSearchParams – must be wrapped in <Suspense>
+function LoginInner() {
   const [error, setError] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [isPending, startTransition] = useTransition()
@@ -212,4 +213,14 @@ export default function LoginPage() {
     </div>
   </div>
 )
+}
+
+// Default page export – wraps LoginInner in Suspense to satisfy Next.js 14's
+// requirement for components that call useSearchParams() during static generation.
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginInner />
+    </Suspense>
+  )
 }
